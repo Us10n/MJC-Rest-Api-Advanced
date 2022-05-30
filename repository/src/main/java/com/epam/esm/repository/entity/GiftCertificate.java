@@ -1,0 +1,48 @@
+package com.epam.esm.repository.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * The type Gift certificate.
+ */
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "gift_certificates")
+public class GiftCertificate {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "price")
+    private Double price;
+
+    @Column(name = "duration")
+    private Integer duration;
+
+    @Column(name = "create_date")
+    private LocalDateTime createDate;
+
+    @Column(name = "last_update_date")
+    private LocalDateTime lastUpdateDate;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(name = "gift_certificate_tags",
+            joinColumns = @JoinColumn(name = "gift_certificate_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags;
+}
