@@ -85,7 +85,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDetailDto readOrdersByUserId(long id, Integer page, Integer limit) {
+    public List<OrderDetailDto> readOrdersByUserId(long id, Integer page, Integer limit) {
+        Optional<User> optionalUser = userDao.findById(id);
+        if (!optionalUser.isPresent()) {
+            throw new NoSuchElementException(USER_NOT_FOUND);
+        }
+
         return orderDao.findOrdersByUserId(id,page, limit)
                 .stream()
                 .map(orderConverter::convertToDto)

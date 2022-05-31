@@ -21,14 +21,7 @@ import java.util.Optional;
 public class TagDaoImpl implements TagDao {
 
     private static final String FIND_ALL_QUERY = "SELECT tags.id, tags.name FROM module.tags";
-    private static final String FIND_BY_ID_QUERY = FIND_ALL_QUERY + " WHERE id=?";
-    private static final String FIND_BY_GIFT_CERTIFICATE_ID_QUERY = "SELECT tags.id, tags.name FROM module.tags " +
-            "JOIN module.gift_certificate_tags ON gift_certificate_tags.tag_id=tags.id " +
-            "WHERE gift_certificate_id=:cerfId";
     private static final String FIND_BY_NAME_QUERY = FIND_ALL_QUERY + " WHERE name=:tagName";
-    private static final String DELETE_TAG_HOLDER_BY_ID_QUERY = "DELETE FROM module.gift_certificate_tags WHERE tag_id=?";
-    private static final String DELETE_TAG_BY_ID_QUERY = "DELETE FROM module.tags WHERE id=?";
-    private static final String ATTACH_TAG_BY_ID_QUERY = "INSERT INTO module.gift_certificate_tags (gift_certificate_id, tag_id) VALUES (?, ?)";
     private static final String DETACH_TAG_BY_ID_QUERY = "DELETE FROM module.gift_certificate_tags WHERE tag_id=:tagId";
     private static final String FIND_WIDELY_USED_TAG_OF_USER_WITH_HIGHEST_COST_OF_ALL_ORDERS="SELECT tags.id, tags.name, gfs.name FROM module.tags " +
             "JOIN module.gift_certificate_tags gfts on gfts.tag_id= tags.id " +

@@ -44,7 +44,7 @@ public class OrderController {
 
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.FOUND)
-    public OrderDetailDto readOrderById(@PathVariable long id,
+    public List<OrderDetailDto> readOrdersById(@PathVariable long id,
                                         @RequestParam(name = "page", defaultValue = "1") @Positive Integer page,
                                         @RequestParam(name = "limit", defaultValue = "10") @Positive Integer limit) {
         return orderService.readOrdersByUserId(id,page,limit);

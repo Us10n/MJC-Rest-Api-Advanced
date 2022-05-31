@@ -12,5 +12,5 @@ public interface OrderService {
 
     OrderDetailDto readById(long id);
 
-    OrderDetailDto readOrdersByUserId(long id, Integer page, Integer limit);
+    List<OrderDetailDto> readOrdersByUserId(long id, Integer page, Integer limit);
 }
