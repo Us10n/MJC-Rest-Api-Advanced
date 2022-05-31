@@ -11,14 +11,6 @@ import java.util.Optional;
  */
 public interface TagDao extends Dao<Tag> {
     /**
-     * Find tags that attached to {@link GiftCertificate}.
-     *
-     * @param id giftCertificate id
-     * @return list of {@link Tag}
-     */
-    List<Tag> findTagsByGiftCertificateId(long id);
-
-    /**
      * Find object instance in database by name.
      *
      * @param name object name
@@ -26,19 +18,5 @@ public interface TagDao extends Dao<Tag> {
      */
     Optional<Tag> findByName(String name);
 
-    /**
-     * Attach tag to certificate.
-     *
-     * @param certificateId the certificate id
-     * @param tagId         the tag id
-     */
-    void attachTagToCertificate(long certificateId, long tagId);
-
-    /**
-     * Detach tag from certificate.
-     *
-     * @param certificateId the certificate id
-     * @param tagId         the tag id
-     */
-    void detachTagFromCertificate(long certificateId, long tagId);
+    Optional<Tag> findWidelyUsedTagOfUserWithHighestCostOfAllOrders();
 }

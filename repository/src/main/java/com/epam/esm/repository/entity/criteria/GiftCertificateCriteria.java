@@ -1,4 +1,4 @@
-package com.epam.esm.service.criteria;
+package com.epam.esm.repository.entity.criteria;
 
 import java.util.Set;
 
@@ -6,28 +6,11 @@ import java.util.Set;
  * Class that used to hold find criteria.
  */
 public class GiftCertificateCriteria {
-    /**
-     * The constant ASC.
-     */
-    public static final String ASC = "ASC";
-    /**
-     * The constant DESC.
-     */
-    public static final String DESC = "DESC";
-    /**
-     * The constant NAME.
-     */
-    public static final String NAME = "name";
-    /**
-     * The constant DATE.
-     */
-    public static final String DATE = "date";
-
     private Set<String> tagNames;
     private String partName;
     private String partDesc;
     private String sortBy;
-    private String sortOrder = ASC;
+    private String sortOrder;
 
     /**
      * Instantiates a new Gift certificate criteria.

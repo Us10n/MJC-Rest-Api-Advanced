@@ -1,12 +1,16 @@
 package com.epam.esm.repository.dao.impl;
 
 import com.epam.esm.repository.dao.OrderDao;
-import com.epam.esm.repository.entity.Order;
+import com.epam.esm.repository.entity.OrderDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,17 +22,45 @@ public class OrderDaoImpl implements OrderDao {
     private final EntityManager entityManager;
 
     @Override
-    public Optional<Order> create(Order object) {
-        return Optional.empty();
+    @Transactional
+    public OrderDetail create(OrderDetail object) {
+        entityManager.persist(object);
+        return object;
     }
 
     @Override
-    public Optional<Order> findById(long id) {
-        return Optional.empty();
+    public Optional<OrderDetail> findById(long id) {
+        return Optional.ofNullable(entityManager.find(OrderDetail.class, id));
     }
 
     @Override
-    public List<Order> findAll() {
-        return null;
+    public List<OrderDetail> findAll(int page, int limit) {
+        int offset = (page - 1) * limit;
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<OrderDetail> query = criteriaBuilder.createQuery(OrderDetail.class).where();
+        Root<OrderDetail> from = query.from(OrderDetail.class);
+        CriteriaQuery<OrderDetail> criteriaQuery = query.select(from);
+
+        return entityManager.createQuery(criteriaQuery)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    @Override
+    public List<OrderDetail> findOrdersByUserId(long id, Integer page, Integer limit) {
+        int offset = (page - 1) * limit;
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<OrderDetail> query = criteriaBuilder.createQuery(OrderDetail.class);
+        Root<OrderDetail> from = query.from(OrderDetail.class);
+        CriteriaQuery<OrderDetail> criteriaQuery = query.select(from);
+        criteriaQuery.
+
+        return entityManager.createQuery(criteriaQuery)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
     }
 }

@@ -30,33 +30,31 @@ public class TagDaoImpl implements TagDao {
     private static final String DELETE_TAG_BY_ID_QUERY = "DELETE FROM module.tags WHERE id=?";
     private static final String ATTACH_TAG_BY_ID_QUERY = "INSERT INTO module.gift_certificate_tags (gift_certificate_id, tag_id) VALUES (?, ?)";
     private static final String DETACH_TAG_BY_ID_QUERY = "DELETE FROM module.gift_certificate_tags WHERE tag_id=:tagId";
+    private static final String FIND_WIDELY_USED_TAG_OF_USER_WITH_HIGHEST_COST_OF_ALL_ORDERS="SELECT tags.id, tags.name, gfs.name FROM module.tags " +
+            "JOIN module.gift_certificate_tags gfts on gfts.tag_id= tags.id " +
+            "JOIN module.gift_certificates gfs on gfs.id=gfts.gift_certificate_id " +
+            "JOIN module.orders ords on ords.gift_certificate_id=gfs.id " +
+            "JOIN module.users usrs on ords.user_id=usrs.id " +
+            "WHERE usrs.id=( " +
+            "    SELECT users.id FROM module.users JOIN module.orders ON orders.user_id=users.id GROUP BY users.id ORDER BY sum(orders.price) DESC LIMIT 1 " +
+            ") " +
+            "GROUP BY tags.name " +
+            "ORDER BY count(tags.name) DESC LIMIT 1";
 
     @PersistenceContext
     private final EntityManager entityManager;
 
     @Override
     @Transactional
-    public Optional<Tag> create(Tag object) {
-        Optional<Tag> createdTag;
-        try {
-            entityManager.persist(object);
-            createdTag = Optional.of(object);
-        } catch (Exception ex) {
-            createdTag = Optional.empty();
-        }
-        return createdTag;
+    public Tag create(Tag object) {
+        entityManager.persist(object);
+
+        return object;
     }
 
     @Override
     public Optional<Tag> findById(long id) {
         return Optional.ofNullable(entityManager.find(Tag.class, id));
-    }
-
-    @Override
-    public List<Tag> findTagsByGiftCertificateId(long id) {
-        return entityManager.createNativeQuery(FIND_BY_GIFT_CERTIFICATE_ID_QUERY,Tag.class)
-                .setParameter("cerfId", id)
-                .getResultList();
     }
 
     @Override
@@ -74,11 +72,19 @@ public class TagDaoImpl implements TagDao {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tag> query = criteriaBuilder.createQuery(Tag.class);
         Root<Tag> from = query.from(Tag.class);
-        CriteriaQuery<Tag> select = query.select(from);
-        TypedQuery<Tag> result = entityManager.createQuery(select);
-        result.setFirstResult(offset);
-        result.setMaxResults(limit);
-        return result.getResultList();
+        CriteriaQuery<Tag> criteriaQuery = query.select(from);
+
+        return entityManager.createQuery(criteriaQuery)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    @Override
+    public Optional<Tag> findWidelyUsedTagOfUserWithHighestCostOfAllOrders() {
+        return entityManager.createNativeQuery(FIND_WIDELY_USED_TAG_OF_USER_WITH_HIGHEST_COST_OF_ALL_ORDERS, Tag.class)
+                .getResultStream()
+                .findFirst();
     }
 
     @Override
@@ -86,18 +92,9 @@ public class TagDaoImpl implements TagDao {
     public void deleteById(long id) {
         Tag object = entityManager.find(Tag.class, id);
         entityManager.createNativeQuery(DETACH_TAG_BY_ID_QUERY)
-                .setParameter("tagId",id)
+                .setParameter("tagId", id)
                 .executeUpdate();
+
         entityManager.remove(object);
-    }
-
-    @Override
-    public void attachTagToCertificate(long certificateId, long tagId) {
-
-    }
-
-    @Override
-    public void detachTagFromCertificate(long certificateId, long tagId) {
-
     }
 }

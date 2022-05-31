@@ -1,5 +1,6 @@
 package com.epam.esm.repository.dao;
 
+import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
 import com.epam.esm.repository.entity.GiftCertificate;
 
 import java.util.List;
@@ -16,15 +17,9 @@ public interface GiftCertificateDao extends Dao<GiftCertificate> {
      * @param giftCertificate contains new values
      * @return {@link Optional} instance of updated object
      */
-    Optional<GiftCertificate> update(GiftCertificate giftCertificate);
+    GiftCertificate update(GiftCertificate giftCertificate);
 
-    /**
-     * Find {@link List<GiftCertificate>} of objects that matches criteria specified in {@code query}.
-     *
-     * @param query query with specified criteria
-     * @return list of {@link GiftCertificate} objects that match with criteria
-     */
-    List<GiftCertificate> findByCriteria(String query);
+    List<GiftCertificate> findByCriteria(GiftCertificateCriteria criteria, int page, int limit);
 
     /**
      * Find object instance in database by name.

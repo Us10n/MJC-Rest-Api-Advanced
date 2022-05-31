@@ -2,11 +2,14 @@ package com.epam.esm.service.util.validator;
 
 import com.epam.esm.repository.entity.Tag;
 import com.epam.esm.service.dto.GiftCertificateDto;
+import com.epam.esm.service.exception.ExceptionHolder;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+
+import static com.epam.esm.service.exception.ExceptionMessageKey.*;
 
 @UtilityClass
 public class GiftCertificateValidator {
@@ -45,14 +48,32 @@ public class GiftCertificateValidator {
         return true;
     }
 
-    public boolean isGiftCertificateDtoValid(GiftCertificateDto giftCertificateDto) {
-        return giftCertificateDto != null
-                && isNameValid(giftCertificateDto.getName())
-                && isDescriptionValid(giftCertificateDto.getDescription())
-                && isPriceValid(giftCertificateDto.getPrice())
-                && isDurationValid(giftCertificateDto.getDuration())
-                && isDateValid(giftCertificateDto.getCreateDate().toString())
-                && isDateValid(giftCertificateDto.getLastUpdateDate().toString())
-                && giftCertificateDto.getTags().stream().allMatch(TagValidator::isTagDtoValid);
+    public void isGiftCertificateDtoValid(GiftCertificateDto giftCertificateDto, ExceptionHolder holder) {
+        if (giftCertificateDto == null) {
+            holder.addException(NULL_PASSED, GiftCertificateDto.class);
+            return;
+        }
+        if (!isNameValid(giftCertificateDto.getName())) {
+            holder.addException(BAD_GIFT_CERTIFICATE_NAME, giftCertificateDto.getName());
+        }
+        if (!isDescriptionValid(giftCertificateDto.getDescription())) {
+            holder.addException(BAD_GIFT_CERTIFICATE_DESCRIPTION, giftCertificateDto.getDescription());
+        }
+        if (!isPriceValid(giftCertificateDto.getPrice())) {
+            holder.addException(BAD_GIFT_CERTIFICATE_PRICE, giftCertificateDto.getPrice());
+        }
+        if (!isDurationValid(giftCertificateDto.getDuration())) {
+            holder.addException(BAD_GIFT_CERTIFICATE_DURATION, giftCertificateDto.getDuration());
+        }
+        if (!isDateValid(giftCertificateDto.getCreateDate().toString())) {
+            holder.addException(BAD_GIFT_CERTIFICATE_CREATE_DATE, giftCertificateDto.getCreateDate());
+        }
+        if (!isDateValid(giftCertificateDto.getLastUpdateDate().toString())) {
+            holder.addException(BAD_GIFT_CERTIFICATE_UPDATE_DATE, giftCertificateDto.getLastUpdateDate());
+        }
+        if(giftCertificateDto.getTags().isEmpty()){
+            holder.addException(GIFT_CERTIFICATE_MUST_CONTAIN_TAGS);
+        }
+        giftCertificateDto.getTags().forEach(tagDto -> TagValidator.isTagDtoValid(tagDto, holder));
     }
 }

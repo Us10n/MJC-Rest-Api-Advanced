@@ -1,4 +1,4 @@
-package com.epam.esm.repository.constants;
+package com.epam.esm.repository.entity.constants;
 
 /**
  * Class that contains table names

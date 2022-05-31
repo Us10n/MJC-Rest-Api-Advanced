@@ -14,5 +14,5 @@ import java.util.List;
 public class UserDto {
     private long userId;
     private String userName;
-    private List<OrderDto> orders;
+    private List<OrderDetailDto> orders;
 }

@@ -1,13 +1,15 @@
 package com.epam.esm.web.controller;
 
-import com.epam.esm.service.criteria.GiftCertificateCriteria;
+import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
 import com.epam.esm.service.dto.GiftCertificateDto;
 import com.epam.esm.service.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +17,7 @@ import java.util.Set;
  * Gift certificate rest controller.
  */
 @RestController
+@Validated
 @RequestMapping("/giftCertificates")
 public class GiftCertificateController {
 
@@ -63,7 +66,8 @@ public class GiftCertificateController {
      */
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDto update(@PathVariable long id, @RequestBody GiftCertificateDto giftCertificateDto) {
+    public GiftCertificateDto update(@PathVariable long id,
+                                     @RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setGiftCertificateId(id);
         return giftCertificateService.update(giftCertificateDto);
     }
@@ -72,19 +76,17 @@ public class GiftCertificateController {
      * Delete by id.
      *
      * @param id the id
-     * @return the response entity
      */
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> deleteById(@PathVariable long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteById(@PathVariable long id) {
         giftCertificateService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**
      * Gets all gift certificates.
      *
-     * @param tagName   the tag name
+     * @param tagNames   the tag names
      * @param partName  the part name
      * @param partDesc  the part desc
      * @param sortBy    the sort by
@@ -92,13 +94,15 @@ public class GiftCertificateController {
      * @return the all gift certificates
      */
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.FOUND)
     public List<GiftCertificateDto> getAllGiftCertificates(
             @RequestParam(name = "tag", required = false) Set<String> tagNames,
             @RequestParam(name = "name", required = false) String partName,
             @RequestParam(name = "description", required = false) String partDesc,
             @RequestParam(name = "sort", required = false) String sortBy,
-            @RequestParam(name = "order", required = false) String sortOrder) {
+            @RequestParam(name = "order", defaultValue = "ASC") String sortOrder,
+            @RequestParam(name = "page", defaultValue = "1") @Positive Integer page,
+            @RequestParam(name = "limit", defaultValue = "10") @Positive Integer limit) {
 
         GiftCertificateCriteria criteria = new GiftCertificateCriteria();
         criteria.setTagNames(tagNames);
@@ -107,6 +111,6 @@ public class GiftCertificateController {
         criteria.setSortBy(sortBy);
         criteria.setSortOrder(sortOrder);
 
-        return giftCertificateService.readByCriteria(criteria);
+        return giftCertificateService.readByCriteria(criteria, page, limit);
     }
 }

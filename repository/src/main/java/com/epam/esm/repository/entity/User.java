@@ -21,5 +21,5 @@ public class User {
     private String name;
 
     @OneToMany(mappedBy = "user")
-    private List<Order> orders;
+    private List<OrderDetail> orders;
 }

@@ -1,7 +1,11 @@
 package com.epam.esm.service.util.validator;
 
 import com.epam.esm.service.dto.TagDto;
+import com.epam.esm.service.exception.ExceptionHolder;
 import lombok.experimental.UtilityClass;
+
+import static com.epam.esm.service.exception.ExceptionMessageKey.BAD_TAG_NAME;
+import static com.epam.esm.service.exception.ExceptionMessageKey.NULL_PASSED;
 
 @UtilityClass
 public class TagValidator {
@@ -11,7 +15,13 @@ public class TagValidator {
         return name != null && name.length() >= MIN_LENGTH;
     }
 
-    public boolean isTagDtoValid(TagDto tagDto) {
-        return tagDto != null && isNameValid(tagDto.getName());
+    public void isTagDtoValid(TagDto tagDto, ExceptionHolder exceptionHolder) {
+        if (tagDto == null) {
+            exceptionHolder.addException(NULL_PASSED, TagDto.class);
+            return;
+        }
+        if (!isNameValid(tagDto.getName())) {
+            exceptionHolder.addException(BAD_TAG_NAME, tagDto.getName());
+        }
     }
 }

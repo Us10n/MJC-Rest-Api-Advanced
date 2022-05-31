@@ -3,9 +3,12 @@ package com.epam.esm.service.service.impl;
 import com.epam.esm.repository.dao.TagDao;
 import com.epam.esm.repository.entity.Tag;
 import com.epam.esm.service.dto.converter.impl.TagConverter;
+import com.epam.esm.service.exception.DuplicateEntityException;
+import com.epam.esm.service.exception.ExceptionHolder;
+import com.epam.esm.service.exception.IncorrectParameterException;
+import com.epam.esm.service.exception.NoSuchElementException;
 import com.epam.esm.service.service.TagService;
 import com.epam.esm.service.dto.TagDto;
-import com.epam.esm.service.exception.ResponseException;
 import com.epam.esm.service.util.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.epam.esm.service.exception.ExceptionMessageKey.*;
+
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -29,16 +35,19 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDto create(TagDto object) {
-        if (TagValidator.isTagDtoValid(object)
-                && !tagDao.findByName(object.getName()).isPresent()) {
-            Tag tagModel = tagConverter.convertToEntity(object);
-            Optional<Tag> createdTag = tagDao.create(tagModel);
-            if (createdTag.isPresent()) {
-                return tagConverter.convertToDto(createdTag.get());
-            }
+        ExceptionHolder exceptionHolder = new ExceptionHolder();
+        TagValidator.isTagDtoValid(object, exceptionHolder);
+        if (!exceptionHolder.getExceptionMessages().isEmpty()) {
+            throw new IncorrectParameterException(exceptionHolder);
+        }
+        if (tagDao.findByName(object.getName()).isPresent()) {
+            throw new DuplicateEntityException(TAG_EXIST);
         }
 
-        throw new ResponseException(HttpStatus.BAD_REQUEST);
+        Tag tagModel = tagConverter.convertToEntity(object);
+        Tag createdTag = tagDao.create(tagModel);
+
+        return tagConverter.convertToDto(createdTag);
     }
 
     @Override
@@ -53,16 +62,28 @@ public class TagServiceImpl implements TagService {
     public TagDto readById(long id) {
         Optional<Tag> optionalTag = tagDao.findById(id);
         if (!optionalTag.isPresent()) {
-            throw new ResponseException(HttpStatus.NOT_FOUND);
+            throw new NoSuchElementException(TAG_NOT_FOUND);
         }
+
+        return tagConverter.convertToDto(optionalTag.get());
+    }
+
+    @Override
+    public TagDto findWidelyUsedTagOfUserWithHighestCostOfAllOrders() {
+        Optional<Tag> optionalTag = tagDao.findWidelyUsedTagOfUserWithHighestCostOfAllOrders();
+        if (!optionalTag.isPresent()) {
+            throw new NoSuchElementException(TAG_NOT_FOUND);
+        }
+
         return tagConverter.convertToDto(optionalTag.get());
     }
 
     @Override
     public void delete(long id) {
         if (!tagDao.findById(id).isPresent()) {
-            throw new ResponseException(HttpStatus.NOT_FOUND);
+            throw new NoSuchElementException(TAG_NOT_FOUND);
         }
+
         tagDao.deleteById(id);
     }
 }

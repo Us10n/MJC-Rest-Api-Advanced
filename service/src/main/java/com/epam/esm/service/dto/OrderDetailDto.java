@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Relation(collectionRelation = "orders")
-public class OrderDto {
+public class OrderDetailDto {
     private long orderId;
     private Double price;
     private LocalDateTime purchaseTime;
-    private UserDto user;
-    private GiftCertificateDto giftCertificateDto;
+    private long userId;
+    private long giftCertificateId;
 }

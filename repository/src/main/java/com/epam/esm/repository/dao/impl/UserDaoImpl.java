@@ -35,10 +35,11 @@ public class UserDaoImpl implements UserDao {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> from = query.from(User.class);
-        CriteriaQuery<User> select = query.select(from);
-        TypedQuery<User> result = entityManager.createQuery(select);
-        result.setFirstResult(offset);
-        result.setMaxResults(limit);
-        return result.getResultList();
+        CriteriaQuery<User> criteriaQuery = query.select(from);
+
+        return entityManager.createQuery(criteriaQuery)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
     }
 }

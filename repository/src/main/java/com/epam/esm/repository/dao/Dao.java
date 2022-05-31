@@ -16,7 +16,7 @@ public interface Dao<T> {
      * @param object object to create in database
      * @return {@link Optional Optional.ofNullable()} of created object
      */
-    Optional<T> create(T object);
+    T create(T object);
 
     /**
      * Find object instance in database by id.

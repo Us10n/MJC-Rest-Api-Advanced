@@ -1,18 +1,20 @@
 package com.epam.esm.web.controller;
 
-import com.epam.esm.service.service.TagService;
 import com.epam.esm.service.dto.TagDto;
+import com.epam.esm.service.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 /**
  * Tag rest controller.
  */
 @RestController
+@Validated
 @RequestMapping("/tags")
 public class TagController {
 
@@ -35,8 +37,8 @@ public class TagController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.FOUND)
-    public List<TagDto> readAllTags(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                    @RequestParam(name = "limit", defaultValue = "10") Integer limit) {
+    public List<TagDto> readAllTags(@RequestParam(name = "page", defaultValue = "1") @Positive Integer page,
+                                    @RequestParam(name = "limit", defaultValue = "10") @Positive Integer limit) {
         return tagService.readAll(page,limit);
     }
 
@@ -50,6 +52,12 @@ public class TagController {
     @ResponseStatus(HttpStatus.FOUND)
     public TagDto readTadById(@PathVariable long id) {
         return tagService.readById(id);
+    }
+
+    @GetMapping("/popular")
+    @ResponseStatus(HttpStatus.OK)
+    public TagDto findWidelyUsedTag() {
+        return tagService.findWidelyUsedTagOfUserWithHighestCostOfAllOrders();
     }
 
     /**
@@ -68,12 +76,10 @@ public class TagController {
      * Delete tag.
      *
      * @param id the id
-     * @return the response entity
      */
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> deleteTag(@PathVariable long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteTag(@PathVariable long id) {
         tagService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

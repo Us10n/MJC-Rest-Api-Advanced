@@ -1,5 +1,7 @@
 package com.epam.esm.repository.dao.impl;
 
+import com.epam.esm.repository.creator.GiftCertificateQueryCreator;
+import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
 import com.epam.esm.repository.dao.GiftCertificateDao;
 import com.epam.esm.repository.entity.GiftCertificate;
 import lombok.RequiredArgsConstructor;
@@ -34,15 +36,10 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     @Transactional
-    public Optional<GiftCertificate> create(GiftCertificate object) {
-        Optional<GiftCertificate> createdCertificate;
-        try {
-            entityManager.persist(object);
-            createdCertificate = Optional.of(object);
-        } catch (Exception ex) {
-            createdCertificate = Optional.empty();
-        }
-        return createdCertificate;
+    public GiftCertificate create(GiftCertificate object) {
+        entityManager.persist(object);
+
+        return object;
     }
 
     @Override
@@ -52,7 +49,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     public Optional<GiftCertificate> findByName(String name) {
-        return entityManager.createQuery(FIND_BY_NAME_QUERY,GiftCertificate.class)
+        return entityManager.createQuery(FIND_BY_NAME_QUERY, GiftCertificate.class)
                 .setParameter("certName", name)
                 .getResultStream()
                 .findFirst();
@@ -65,16 +62,24 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> query = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> from = query.from(GiftCertificate.class);
-        CriteriaQuery<GiftCertificate> select = query.select(from);
-        TypedQuery<GiftCertificate> result = entityManager.createQuery(select);
-        result.setFirstResult(offset);
-        result.setMaxResults(limit);
-        return result.getResultList();
+        CriteriaQuery<GiftCertificate> criteriaQuery = query.select(from);
+
+        return entityManager.createQuery(criteriaQuery)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
     }
 
     @Override
-    public List<GiftCertificate> findByCriteria(String query) {
-        return entityManager.createNativeQuery(query,GiftCertificate.class).getResultList();
+    public List<GiftCertificate> findByCriteria(GiftCertificateCriteria criteria, int page, int limit) {
+        int offset = (page - 1) * limit;
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<GiftCertificate> criteriaQuery = GiftCertificateQueryCreator.buildGetQueryByCriteria(criteria, criteriaBuilder);
+        return entityManager.createQuery(criteriaQuery)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
     }
 
     @Override
@@ -83,12 +88,13 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         GiftCertificate object = entityManager.find(GiftCertificate.class, id);
         entityManager.createNativeQuery(DETACH_ALL_TAGS_BY_ID_QUERY)
                 .setParameter("certificateId", id);
+
         entityManager.remove(object);
     }
 
     @Override
     @Transactional
-    public Optional<GiftCertificate> update(GiftCertificate object) {
-        return Optional.ofNullable(entityManager.merge(object));
+    public GiftCertificate update(GiftCertificate object) {
+        return entityManager.merge(object);
     }
 }
