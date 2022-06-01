@@ -1,7 +1,6 @@
 package com.epam.esm.repository.creator;
 
 import com.epam.esm.repository.entity.GiftCertificate;
-import com.epam.esm.repository.entity.constants.TableNames;
 import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
 import lombok.experimental.UtilityClass;
 
@@ -22,6 +21,7 @@ public class GiftCertificateQueryCreator {
     private static final String DESC = "DESC";
     private static final String DESCRIPTION = "description";
     private static final String CREATE_DATE = "createDate";
+    private static final String TAGS_TABLE = "tags";
 
     public CriteriaQuery<GiftCertificate> buildGetQueryByCriteria(GiftCertificateCriteria criteria, CriteriaBuilder criteriaBuilder) {
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
@@ -97,7 +97,7 @@ public class GiftCertificateQueryCreator {
         if (tagNames != null) {
             restrictions = tagNames.stream()
                     .map(tagName ->
-                            criteriaBuilder.equal(root.join(TableNames.TAGS_TABLE).get(NAME), tagName))
+                            criteriaBuilder.equal(root.join(TAGS_TABLE).get(NAME), tagName))
                     .collect(Collectors.toList());
         }
         return restrictions;

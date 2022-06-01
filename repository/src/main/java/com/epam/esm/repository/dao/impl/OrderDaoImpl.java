@@ -2,8 +2,6 @@ package com.epam.esm.repository.dao.impl;
 
 import com.epam.esm.repository.dao.OrderDao;
 import com.epam.esm.repository.entity.OrderDetail;
-import com.epam.esm.repository.entity.constants.ColumnNames;
-import com.epam.esm.repository.entity.constants.TableNames;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +19,8 @@ import java.util.Optional;
 public class OrderDaoImpl implements OrderDao {
 
     private static final String FIND_ORDERS_BY_USER_ID="SELECT o FROM OrderDetail o WHERE o.user.id = :userId";
+    private static final String COUNT_ENTITIES_HQUERY = "SELECT count(o) FROM OrderDetail o";
+
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -54,7 +54,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public long countAll() {
-        return entityManager.createQuery("SELECT count(o) FROM OrderDetail o", Long.class).getSingleResult();
+        return entityManager.createQuery(COUNT_ENTITIES_HQUERY, Long.class).getSingleResult();
     }
 
     @Override

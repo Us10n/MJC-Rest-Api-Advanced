@@ -33,6 +33,8 @@ public class TagDaoImpl implements TagDao {
             ") " +
             "GROUP BY tags.name " +
             "ORDER BY count(tags.name) DESC LIMIT 1";
+    private static final String COUNT_ENTITIES_HQUERY = "SELECT count(t) FROM Tag t";
+
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -75,7 +77,7 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public long countAll() {
-        return entityManager.createQuery("SELECT count(t) FROM Tag t", Long.class).getSingleResult();
+        return entityManager.createQuery(COUNT_ENTITIES_HQUERY, Long.class).getSingleResult();
     }
 
     @Override

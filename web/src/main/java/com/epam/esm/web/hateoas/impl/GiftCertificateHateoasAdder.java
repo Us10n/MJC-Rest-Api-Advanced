@@ -14,12 +14,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class GiftCertificateHateoasAdder implements HateoasAdder<GiftCertificateDto> {
+
     private static final Class<GiftCertificateController> GIFT_CERTIFICATE_CONTROLLER = GiftCertificateController.class;
     private static final Class<TagController> TAG_CONTROLLER = TagController.class;
 
     private static final String REDUNDANT_INFO = "\\{.*?}";
     private static final String EMPTY = "";
-
 
     @Override
     public void addLinksToEntity(GiftCertificateDto entity) {

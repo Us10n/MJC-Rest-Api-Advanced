@@ -11,6 +11,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class UserHateoasAdder implements HateoasAdder<UserDto> {
+
     private static final Class<UserController> USER_CONTROLLER = UserController.class;
 
     @Override

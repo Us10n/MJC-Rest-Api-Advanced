@@ -34,17 +34,18 @@ import static com.epam.esm.service.exception.ExceptionMessageKey.GIFT_CERTIFICAT
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
-    private GiftCertificateDao giftCertificateDao;
-    private TagDao tagDao;
-    @Autowired
-    private GiftCertificateConverter giftCertificateConverter;
-    @Autowired
-    private TagConverter tagConverter;
+    private final GiftCertificateDao giftCertificateDao;
+    private final TagDao tagDao;
+    private final GiftCertificateConverter giftCertificateConverter;
+    private final TagConverter tagConverter;
 
     @Autowired
-    public GiftCertificateServiceImpl(GiftCertificateDao giftCertificateDao, TagDao tagDao) {
+    public GiftCertificateServiceImpl(GiftCertificateDao giftCertificateDao, TagDao tagDao,
+                                      GiftCertificateConverter giftCertificateConverter, TagConverter tagConverter) {
         this.giftCertificateDao = giftCertificateDao;
         this.tagDao = tagDao;
+        this.giftCertificateConverter = giftCertificateConverter;
+        this.tagConverter = tagConverter;
     }
 
     @Override

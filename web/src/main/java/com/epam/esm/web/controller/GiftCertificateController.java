@@ -1,6 +1,5 @@
 package com.epam.esm.web.controller;
 
-import com.epam.esm.repository.entity.GiftCertificate;
 import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
 import com.epam.esm.service.dto.GiftCertificateDto;
 import com.epam.esm.service.service.GiftCertificateService;
@@ -13,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
-import java.util.List;
 import java.util.Set;
 
 /**

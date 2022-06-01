@@ -1,15 +1,12 @@
 package com.epam.esm.repository.dao.impl;
 
 import com.epam.esm.repository.dao.UserDao;
-import com.epam.esm.repository.entity.Tag;
 import com.epam.esm.repository.entity.User;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -19,6 +16,8 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class UserDaoImpl implements UserDao {
+
+    private static final String COUNT_ENTITIES_HQUERY = "SELECT count(u) FROM User u";
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -45,6 +44,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public long countAll() {
-        return entityManager.createQuery("SELECT count(u) FROM User u", Long.class).getSingleResult();
+        return entityManager.createQuery(COUNT_ENTITIES_HQUERY, Long.class).getSingleResult();
     }
 }

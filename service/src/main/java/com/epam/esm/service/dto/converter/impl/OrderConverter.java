@@ -9,11 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderConverter implements DtoEntityConverter<OrderDetailDto, OrderDetail> {
 
-    @Autowired
-    private GiftCertificateConverter giftCertificateConverter;
-    @Autowired
-    private UserConverter userConverter;
-
     @Override
     public OrderDetailDto convertToDto(OrderDetail object) {
         OrderDetailDto orderDetailDto = new OrderDetailDto();

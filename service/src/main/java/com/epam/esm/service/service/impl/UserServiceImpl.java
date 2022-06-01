@@ -19,8 +19,8 @@ import static com.epam.esm.service.exception.ExceptionMessageKey.USER_NOT_FOUND;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserConverter userConverter;
-    private UserDao userDao;
+    private final UserConverter userConverter;
+    private final UserDao userDao;
 
     @Autowired
     public UserServiceImpl(UserConverter converter, UserDao userDao) {
@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
         long totalNumberOfEntities = userDao.countAll();
         PagedModel.PageMetadata metadata = new PagedModel.PageMetadata(limit, page, totalNumberOfEntities);
+
         return PagedModel.of(userDtos, metadata);
     }
 

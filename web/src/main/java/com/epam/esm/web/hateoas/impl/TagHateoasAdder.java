@@ -11,6 +11,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class TagHateoasAdder implements HateoasAdder<TagDto> {
+
     private static final Class<TagController> TAG_CONTROLLER = TagController.class;
 
     @Override

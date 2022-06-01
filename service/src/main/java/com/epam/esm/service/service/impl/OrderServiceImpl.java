@@ -28,17 +28,18 @@ import static com.epam.esm.service.exception.ExceptionMessageKey.*;
 @Component
 public class OrderServiceImpl implements OrderService {
 
-    private OrderDao orderDao;
-    private OrderConverter orderConverter;
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private GiftCertificateDao giftCertificateDao;
+    private final OrderDao orderDao;
+    private final OrderConverter orderConverter;
+    private final UserDao userDao;
+    private final GiftCertificateDao giftCertificateDao;
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, OrderConverter orderConverter) {
+    public OrderServiceImpl(OrderDao orderDao, OrderConverter orderConverter,
+                            UserDao userDao, GiftCertificateDao giftCertificateDao) {
         this.orderDao = orderDao;
         this.orderConverter = orderConverter;
+        this.userDao = userDao;
+        this.giftCertificateDao = giftCertificateDao;
     }
 
     @Override
