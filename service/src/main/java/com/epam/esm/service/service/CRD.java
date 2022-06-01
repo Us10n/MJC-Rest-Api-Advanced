@@ -1,5 +1,7 @@
 package com.epam.esm.service.service;
 
+import org.springframework.hateoas.PagedModel;
+
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ public interface CRD<T, R> {
      *
      * @return list of existing objects
      */
-    List<T> readAll(Integer page, Integer limit);
+    PagedModel<T> readAll(Integer page, Integer limit);
 
     /**
      * Read T object by id.

@@ -3,6 +3,7 @@ package com.epam.esm.service.service;
 import com.epam.esm.repository.entity.GiftCertificate;
 import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
 import com.epam.esm.service.dto.GiftCertificateDto;
+import org.springframework.hateoas.PagedModel;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface GiftCertificateService extends CRUD<GiftCertificateDto, GiftCer
      * @param criteria object that contains read criterias
      * @return the list of {@link GiftCertificateDto} objects
      */
-    List<GiftCertificateDto> readByCriteria(GiftCertificateCriteria criteria, Integer page, Integer limit);
+    PagedModel<GiftCertificateDto> readByCriteria(GiftCertificateCriteria criteria, Integer page, Integer limit);
 }

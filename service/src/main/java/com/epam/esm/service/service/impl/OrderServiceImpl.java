@@ -16,6 +16,7 @@ import com.epam.esm.service.service.OrderService;
 import com.epam.esm.service.util.handler.DateHandler;
 import com.epam.esm.service.util.validator.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDetailDto create(Order order) {
         ExceptionHolder exceptionHolder = new ExceptionHolder();
-        OrderValidator.isOrderValid(order,exceptionHolder);
+        OrderValidator.isOrderValid(order, exceptionHolder);
         if (!exceptionHolder.getExceptionMessages().isEmpty()) {
             throw new IncorrectParameterException(exceptionHolder);
         }
@@ -67,11 +68,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDetailDto> readAll(Integer page, Integer limit) {
-        return orderDao.findAll(page, limit)
+    public PagedModel<OrderDetailDto> readAll(Integer page, Integer limit) {
+        List<OrderDetailDto> orderDetailDtos = orderDao.findAll(page, limit)
                 .stream()
                 .map(orderConverter::convertToDto)
                 .collect(Collectors.toList());
+        long totalNumberOfEntities = orderDao.countAll();
+        PagedModel.PageMetadata metadata = new PagedModel.PageMetadata(limit, page, totalNumberOfEntities);
+        return PagedModel.of(orderDetailDtos, metadata);
     }
 
     @Override
@@ -85,15 +89,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDetailDto> readOrdersByUserId(long id, Integer page, Integer limit) {
+    public PagedModel<OrderDetailDto> readOrdersByUserId(long id, Integer page, Integer limit) {
         Optional<User> optionalUser = userDao.findById(id);
         if (!optionalUser.isPresent()) {
             throw new NoSuchElementException(USER_NOT_FOUND);
         }
 
-        return orderDao.findOrdersByUserId(id,page, limit)
+        List<OrderDetailDto> orderDetailDtos = orderDao.findOrdersByUserId(id, page, limit)
                 .stream()
                 .map(orderConverter::convertToDto)
                 .collect(Collectors.toList());
+        long totalNumberOfEntities = giftCertificateDao.countAll();
+        PagedModel.PageMetadata metadata = new PagedModel.PageMetadata(limit, page, totalNumberOfEntities);
+        return PagedModel.of(orderDetailDtos, metadata);
     }
 }

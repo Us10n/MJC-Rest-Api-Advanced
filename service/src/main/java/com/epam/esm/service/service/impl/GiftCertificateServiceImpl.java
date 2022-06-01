@@ -17,6 +17,7 @@ import com.epam.esm.service.util.handler.DateHandler;
 import com.epam.esm.service.util.validator.GiftCertificateCriteriaValidator;
 import com.epam.esm.service.util.validator.GiftCertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -73,11 +74,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificateDto> readAll(Integer page, Integer limit) {
-        return giftCertificateDao.findAll(page, limit)
+    public PagedModel<GiftCertificateDto> readAll(Integer page, Integer limit) {
+        List<GiftCertificateDto> giftCertificateDtos = giftCertificateDao.findAll(page, limit)
                 .stream()
                 .map(giftCertificateConverter::convertToDto)
                 .collect(Collectors.toList());
+        long totalNumberOfEntities = giftCertificateDao.countAll();
+        PagedModel.PageMetadata metadata = new PagedModel.PageMetadata(limit, page, totalNumberOfEntities);
+        return PagedModel.of(giftCertificateDtos, metadata);
     }
 
     @Override
@@ -91,7 +95,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificateDto> readByCriteria(GiftCertificateCriteria criteria, Integer page, Integer limit) {
+    public PagedModel<GiftCertificateDto> readByCriteria(GiftCertificateCriteria criteria, Integer page, Integer limit) {
         ExceptionHolder exceptionHolder = new ExceptionHolder();
         GiftCertificateCriteriaValidator.isCriteriaValid(criteria, exceptionHolder);
         if (!exceptionHolder.getExceptionMessages().isEmpty()) {
@@ -99,10 +103,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
 
         List<GiftCertificate> foundCertificates = giftCertificateDao.findByCriteria(criteria, page, limit);
-
-        return foundCertificates.stream()
+        List<GiftCertificateDto> certificateDtos = foundCertificates.stream()
                 .map(giftCertificateConverter::convertToDto)
                 .collect(Collectors.toList());
+        long totalNumberOfEntities = giftCertificateDao.countAll();
+        PagedModel.PageMetadata metadata = new PagedModel.PageMetadata(limit, page, totalNumberOfEntities);
+        return PagedModel.of(certificateDtos, metadata);
     }
 
     @Override

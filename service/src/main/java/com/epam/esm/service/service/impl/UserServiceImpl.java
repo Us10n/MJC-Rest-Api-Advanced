@@ -7,6 +7,7 @@ import com.epam.esm.service.dto.converter.impl.UserConverter;
 import com.epam.esm.service.exception.NoSuchElementException;
 import com.epam.esm.service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,11 +29,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> readAll(Integer page, Integer limit) {
-        return userDao.findAll(page, limit)
+    public PagedModel<UserDto> readAll(Integer page, Integer limit) {
+        List<UserDto> userDtos = userDao.findAll(page, limit)
                 .stream()
                 .map(userConverter::convertToDto)
                 .collect(Collectors.toList());
+        long totalNumberOfEntities = userDao.countAll();
+        PagedModel.PageMetadata metadata = new PagedModel.PageMetadata(limit, page, totalNumberOfEntities);
+        return PagedModel.of(userDtos, metadata);
     }
 
     @Override

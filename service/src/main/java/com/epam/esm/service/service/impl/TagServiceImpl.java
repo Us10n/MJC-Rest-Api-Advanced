@@ -11,7 +11,7 @@ import com.epam.esm.service.service.TagService;
 import com.epam.esm.service.dto.TagDto;
 import com.epam.esm.service.util.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,11 +51,14 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<TagDto> readAll(Integer page, Integer limit) {
-        return tagDao.findAll(page, limit)
+    public PagedModel<TagDto> readAll(Integer page, Integer limit) {
+        List<TagDto> tagDtos = tagDao.findAll(page, limit)
                 .stream()
                 .map(tagConverter::convertToDto)
                 .collect(Collectors.toList());
+        long totalNumberOfEntities = tagDao.countAll();
+        PagedModel.PageMetadata metadata = new PagedModel.PageMetadata(limit, page, totalNumberOfEntities);
+        return PagedModel.of(tagDtos, metadata);
     }
 
     @Override
@@ -83,7 +86,6 @@ public class TagServiceImpl implements TagService {
         if (!tagDao.findById(id).isPresent()) {
             throw new NoSuchElementException(TAG_NOT_FOUND);
         }
-
         tagDao.deleteById(id);
     }
 }

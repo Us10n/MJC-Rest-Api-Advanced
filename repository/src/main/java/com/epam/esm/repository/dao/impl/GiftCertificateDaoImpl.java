@@ -43,7 +43,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     public Optional<GiftCertificate> findByName(String name) {
-        return entityManager.createQuery(FIND_BY_NAME_QUERY, GiftCertificate.class)
+        return entityManager.createNativeQuery(FIND_BY_NAME_QUERY, GiftCertificate.class)
                 .setParameter("certName", name)
                 .getResultStream()
                 .findFirst();
@@ -62,6 +62,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
+    }
+
+    @Override
+    public long countAll() {
+        return entityManager.createQuery("SELECT count(crt) FROM GiftCertificate crt", Long.class).getSingleResult();
     }
 
     @Override

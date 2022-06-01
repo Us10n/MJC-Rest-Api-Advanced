@@ -1,9 +1,12 @@
 package com.epam.esm.web.controller;
 
+import com.epam.esm.repository.entity.GiftCertificate;
 import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
 import com.epam.esm.service.dto.GiftCertificateDto;
 import com.epam.esm.service.service.GiftCertificateService;
+import com.epam.esm.web.hateoas.impl.GiftCertificateHateoasAdder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +25,7 @@ import java.util.Set;
 public class GiftCertificateController {
 
     private GiftCertificateService giftCertificateService;
+    private GiftCertificateHateoasAdder giftCertificateHateoasAdder;
 
     /**
      * Instantiates a new Gift certificate controller.
@@ -29,8 +33,9 @@ public class GiftCertificateController {
      * @param giftCertificateService the gift certificate service
      */
     @Autowired
-    public GiftCertificateController(GiftCertificateService giftCertificateService) {
+    public GiftCertificateController(GiftCertificateService giftCertificateService, GiftCertificateHateoasAdder hateoasAdder) {
         this.giftCertificateService = giftCertificateService;
+        this.giftCertificateHateoasAdder = hateoasAdder;
     }
 
     /**
@@ -41,8 +46,11 @@ public class GiftCertificateController {
      */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.FOUND)
-    public GiftCertificateDto readById(@PathVariable long id) {
-        return giftCertificateService.readById(id);
+    public GiftCertificateDto readGiftCertificateById(@PathVariable long id) {
+        GiftCertificateDto giftCertificateDto = giftCertificateService.readById(id);
+        giftCertificateHateoasAdder.addLinksToEntity(giftCertificateDto);
+
+        return giftCertificateDto;
     }
 
     /**
@@ -53,8 +61,11 @@ public class GiftCertificateController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GiftCertificateDto create(@RequestBody GiftCertificateDto giftCertificateDto) {
-        return giftCertificateService.create(giftCertificateDto);
+    public GiftCertificateDto createGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
+        GiftCertificateDto createdGiftCertificate = giftCertificateService.create(giftCertificateDto);
+        giftCertificateHateoasAdder.addLinksToEntity(createdGiftCertificate);
+
+        return createdGiftCertificate;
     }
 
     /**
@@ -66,10 +77,13 @@ public class GiftCertificateController {
      */
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDto update(@PathVariable long id,
-                                     @RequestBody GiftCertificateDto giftCertificateDto) {
+    public GiftCertificateDto updateGiftCertificate(@PathVariable long id,
+                                                    @RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setGiftCertificateId(id);
-        return giftCertificateService.update(giftCertificateDto);
+        GiftCertificateDto createdGiftCertificate = giftCertificateService.update(giftCertificateDto);
+        giftCertificateHateoasAdder.addLinksToEntity(createdGiftCertificate);
+
+        return createdGiftCertificate;
     }
 
     /**
@@ -79,14 +93,15 @@ public class GiftCertificateController {
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteById(@PathVariable long id) {
+    public ResponseEntity<Void> deleteGiftCertificateById(@PathVariable long id) {
         giftCertificateService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
      * Gets all gift certificates.
      *
-     * @param tagNames   the tag names
+     * @param tagNames  the tag names
      * @param partName  the part name
      * @param partDesc  the part desc
      * @param sortBy    the sort by
@@ -95,7 +110,7 @@ public class GiftCertificateController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.FOUND)
-    public List<GiftCertificateDto> getAllGiftCertificates(
+    public PagedModel<GiftCertificateDto> readAllGiftCertificates(
             @RequestParam(name = "tag", required = false) Set<String> tagNames,
             @RequestParam(name = "name", required = false) String partName,
             @RequestParam(name = "description", required = false) String partDesc,
@@ -110,7 +125,9 @@ public class GiftCertificateController {
         criteria.setPartDesc(partDesc);
         criteria.setSortBy(sortBy);
         criteria.setSortOrder(sortOrder);
+        PagedModel<GiftCertificateDto> giftCertificateDtos = giftCertificateService.readByCriteria(criteria, page, limit);
+        giftCertificateHateoasAdder.addLinksToCollection(giftCertificateDtos, criteria);
 
-        return giftCertificateService.readByCriteria(criteria, page, limit);
+        return giftCertificateDtos;
     }
 }

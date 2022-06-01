@@ -53,6 +53,11 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public long countAll() {
+        return entityManager.createQuery("SELECT count(o) FROM OrderDetail o", Long.class).getSingleResult();
+    }
+
+    @Override
     public List<OrderDetail> findOrdersByUserId(long id, Integer page, Integer limit) {
         int offset = (page - 1) * limit;
 

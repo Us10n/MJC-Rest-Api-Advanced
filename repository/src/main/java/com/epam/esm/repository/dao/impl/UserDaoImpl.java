@@ -42,4 +42,9 @@ public class UserDaoImpl implements UserDao {
                 .setMaxResults(limit)
                 .getResultList();
     }
+
+    @Override
+    public long countAll() {
+        return entityManager.createQuery("SELECT count(u) FROM User u", Long.class).getSingleResult();
+    }
 }

@@ -28,6 +28,8 @@ public interface Dao<T> {
 
     List<T> findAll(int page, int limit);
 
+    long countAll();
+
     /**
      * Delete object instance in database by id.
      *

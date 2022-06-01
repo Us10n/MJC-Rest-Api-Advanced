@@ -2,8 +2,11 @@ package com.epam.esm.web.controller;
 
 import com.epam.esm.service.dto.TagDto;
 import com.epam.esm.service.service.TagService;
+import com.epam.esm.web.hateoas.impl.TagHateoasAdder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,7 @@ import java.util.List;
 public class TagController {
 
     private TagService tagService;
+    private TagHateoasAdder tagHateoasAdder;
 
     /**
      * Instantiates a new Tag controller.
@@ -26,8 +30,9 @@ public class TagController {
      * @param tagService the tag service
      */
     @Autowired
-    public TagController(TagService tagService) {
+    public TagController(TagService tagService, TagHateoasAdder hateoasAdder) {
         this.tagService = tagService;
+        this.tagHateoasAdder = hateoasAdder;
     }
 
     /**
@@ -37,9 +42,12 @@ public class TagController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.FOUND)
-    public List<TagDto> readAllTags(@RequestParam(name = "page", defaultValue = "1") @Positive Integer page,
-                                    @RequestParam(name = "limit", defaultValue = "10") @Positive Integer limit) {
-        return tagService.readAll(page,limit);
+    public PagedModel<TagDto> readAllTags(@RequestParam(name = "page", defaultValue = "1") @Positive Integer page,
+                                          @RequestParam(name = "limit", defaultValue = "10") @Positive Integer limit) {
+        PagedModel<TagDto> tagDtos = tagService.readAll(page, limit);
+        tagHateoasAdder.addLinksToCollection(tagDtos);
+
+        return tagDtos;
     }
 
     /**
@@ -51,13 +59,19 @@ public class TagController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     public TagDto readTadById(@PathVariable long id) {
-        return tagService.readById(id);
+        TagDto tagDto = tagService.readById(id);
+        tagHateoasAdder.addLinksToEntity(tagDto);
+
+        return tagDto;
     }
 
     @GetMapping("/popular")
     @ResponseStatus(HttpStatus.OK)
-    public TagDto findWidelyUsedTag() {
-        return tagService.findWidelyUsedTagOfUserWithHighestCostOfAllOrders();
+    public TagDto readWidelyUsedTag() {
+        TagDto tagDto = tagService.findWidelyUsedTagOfUserWithHighestCostOfAllOrders();
+        tagHateoasAdder.addLinksToEntity(tagDto);
+
+        return tagDto;
     }
 
     /**
@@ -69,7 +83,10 @@ public class TagController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TagDto createTag(@RequestBody TagDto tagDto) {
-        return tagService.create(tagDto);
+        TagDto createdTag = tagService.create(tagDto);
+        tagHateoasAdder.addLinksToEntity(createdTag);
+
+        return createdTag;
     }
 
     /**
@@ -79,7 +96,8 @@ public class TagController {
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteTag(@PathVariable long id) {
+    public ResponseEntity<Void> deleteTag(@PathVariable long id) {
         tagService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

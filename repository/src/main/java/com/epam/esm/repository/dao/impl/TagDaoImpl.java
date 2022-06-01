@@ -74,6 +74,11 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
+    public long countAll() {
+        return entityManager.createQuery("SELECT count(t) FROM Tag t", Long.class).getSingleResult();
+    }
+
+    @Override
     public Optional<Tag> findWidelyUsedTagOfUserWithHighestCostOfAllOrders() {
         return entityManager.createNativeQuery(FIND_WIDELY_USED_TAG_OF_USER_WITH_HIGHEST_COST_OF_ALL_ORDERS, Tag.class)
                 .getResultStream()

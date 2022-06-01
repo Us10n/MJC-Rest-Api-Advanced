@@ -2,15 +2,14 @@ package com.epam.esm.service.service;
 
 import com.epam.esm.service.dto.Order;
 import com.epam.esm.service.dto.OrderDetailDto;
-
-import java.util.List;
+import org.springframework.hateoas.PagedModel;
 
 public interface OrderService {
     OrderDetailDto create(Order object);
 
-    List<OrderDetailDto> readAll(Integer page, Integer limit);
+    PagedModel<OrderDetailDto> readAll(Integer page, Integer limit);
 
     OrderDetailDto readById(long id);
 
-    List<OrderDetailDto> readOrdersByUserId(long id, Integer page, Integer limit);
+    PagedModel<OrderDetailDto> readOrdersByUserId(long id, Integer page, Integer limit);
 }

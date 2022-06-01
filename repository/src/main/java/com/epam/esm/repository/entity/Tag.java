@@ -3,6 +3,7 @@ package com.epam.esm.repository.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tags")
+@Audited
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

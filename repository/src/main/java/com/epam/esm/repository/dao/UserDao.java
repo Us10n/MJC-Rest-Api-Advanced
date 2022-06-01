@@ -15,4 +15,7 @@ public interface UserDao {
      */
     Optional<User> findById(long id);
 
-    List<User> findAll(int page, int limit);}
+    List<User> findAll(int page, int limit);
+
+    long countAll();
+}

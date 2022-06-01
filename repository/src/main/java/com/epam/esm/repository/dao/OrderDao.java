@@ -25,5 +25,7 @@ public interface OrderDao {
 
     List<OrderDetail> findAll(int page, int limit);
 
+    long countAll();
+
     List<OrderDetail> findOrdersByUserId(long id, Integer page, Integer limit);
 }

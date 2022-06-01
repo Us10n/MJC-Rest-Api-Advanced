@@ -3,6 +3,7 @@ package com.epam.esm.service.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Relation(collectionRelation = "users")
-public class UserDto {
+public class UserDto extends RepresentationModel<UserDto> {
     private long userId;
     private String userName;
     private List<OrderDetailDto> orders;

@@ -3,6 +3,7 @@ package com.epam.esm.service.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 /**
@@ -12,16 +13,7 @@ import org.springframework.hateoas.server.core.Relation;
 @NoArgsConstructor
 @AllArgsConstructor
 @Relation(collectionRelation = "tags")
-public class TagDto {
+public class TagDto  extends RepresentationModel<TagDto> {
     private long tagId;
     private String name;
-
-    /**
-     * Instantiates a new Tag dto.
-     *
-     * @param name the name
-     */
-    public TagDto(String name) {
-        this.name = name;
-    }
 }
