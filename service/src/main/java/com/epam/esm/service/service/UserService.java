@@ -1,9 +1,7 @@
 package com.epam.esm.service.service;
 
-import com.epam.esm.service.dto.UserDto;
+import com.epam.esm.domain.dto.UserDto;
 import org.springframework.hateoas.PagedModel;
-
-import java.util.List;
 
 public interface UserService {
     PagedModel<UserDto> readAll(Integer page, Integer limit);

@@ -1,7 +1,7 @@
 package com.epam.esm.service.service;
 
-import com.epam.esm.repository.entity.Tag;
-import com.epam.esm.service.dto.TagDto;
+import com.epam.esm.domain.dto.TagDto;
+import com.epam.esm.domain.entity.Tag;
 
 /**
  * Interface that provides CRUD operations for Tags

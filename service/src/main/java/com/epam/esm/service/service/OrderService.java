@@ -1,7 +1,7 @@
 package com.epam.esm.service.service;
 
-import com.epam.esm.service.dto.Order;
-import com.epam.esm.service.dto.OrderDetailDto;
+import com.epam.esm.domain.dto.Order;
+import com.epam.esm.domain.dto.OrderDetailDto;
 import org.springframework.hateoas.PagedModel;
 
 public interface OrderService {

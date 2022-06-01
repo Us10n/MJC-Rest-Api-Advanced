@@ -1,11 +1,9 @@
 package com.epam.esm.service.service;
 
-import com.epam.esm.repository.entity.GiftCertificate;
-import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
-import com.epam.esm.service.dto.GiftCertificateDto;
+import com.epam.esm.domain.criteria.GiftCertificateCriteria;
+import com.epam.esm.domain.dto.GiftCertificateDto;
+import com.epam.esm.domain.entity.GiftCertificate;
 import org.springframework.hateoas.PagedModel;
-
-import java.util.List;
 
 /**
  * Interface that provides CRUD operations for GiftCertificates

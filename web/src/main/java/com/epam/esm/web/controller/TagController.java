@@ -1,6 +1,6 @@
 package com.epam.esm.web.controller;
 
-import com.epam.esm.service.dto.TagDto;
+import com.epam.esm.domain.dto.TagDto;
 import com.epam.esm.service.service.TagService;
 import com.epam.esm.web.hateoas.impl.TagHateoasAdder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 /**
  * Tag rest controller.
@@ -21,8 +20,8 @@ import java.util.List;
 @RequestMapping("/tags")
 public class TagController {
 
-    private TagService tagService;
-    private TagHateoasAdder tagHateoasAdder;
+    private final TagService tagService;
+    private final TagHateoasAdder tagHateoasAdder;
 
     /**
      * Instantiates a new Tag controller.

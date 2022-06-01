@@ -1,14 +1,14 @@
 package com.epam.esm.service.service.impl;
 
+import com.epam.esm.domain.dto.TagDto;
+import com.epam.esm.domain.entity.Tag;
 import com.epam.esm.repository.dao.TagDao;
-import com.epam.esm.repository.entity.Tag;
-import com.epam.esm.service.dto.converter.impl.TagConverter;
+import com.epam.esm.service.converter.impl.TagConverter;
 import com.epam.esm.service.exception.DuplicateEntityException;
 import com.epam.esm.service.exception.ExceptionHolder;
 import com.epam.esm.service.exception.IncorrectParameterException;
 import com.epam.esm.service.exception.NoSuchElementException;
 import com.epam.esm.service.service.TagService;
-import com.epam.esm.service.dto.TagDto;
 import com.epam.esm.service.util.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.PagedModel;
@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.service.exception.ExceptionMessageKey.*;
-
+import static com.epam.esm.service.exception.ExceptionMessageKey.TAG_EXIST;
+import static com.epam.esm.service.exception.ExceptionMessageKey.TAG_NOT_FOUND;
 
 @Service
 public class TagServiceImpl implements TagService {

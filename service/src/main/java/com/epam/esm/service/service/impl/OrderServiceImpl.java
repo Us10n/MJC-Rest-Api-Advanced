@@ -1,14 +1,14 @@
 package com.epam.esm.service.service.impl;
 
+import com.epam.esm.domain.dto.Order;
+import com.epam.esm.domain.dto.OrderDetailDto;
+import com.epam.esm.domain.entity.GiftCertificate;
+import com.epam.esm.domain.entity.OrderDetail;
+import com.epam.esm.domain.entity.User;
 import com.epam.esm.repository.dao.GiftCertificateDao;
 import com.epam.esm.repository.dao.OrderDao;
 import com.epam.esm.repository.dao.UserDao;
-import com.epam.esm.repository.entity.GiftCertificate;
-import com.epam.esm.repository.entity.OrderDetail;
-import com.epam.esm.repository.entity.User;
-import com.epam.esm.service.dto.Order;
-import com.epam.esm.service.dto.OrderDetailDto;
-import com.epam.esm.service.dto.converter.impl.OrderConverter;
+import com.epam.esm.service.converter.impl.OrderConverter;
 import com.epam.esm.service.exception.ExceptionHolder;
 import com.epam.esm.service.exception.IncorrectParameterException;
 import com.epam.esm.service.exception.NoSuchElementException;

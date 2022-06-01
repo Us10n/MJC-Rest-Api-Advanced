@@ -1,6 +1,6 @@
 package com.epam.esm.web.hateoas.impl;
 
-import com.epam.esm.service.dto.TagDto;
+import com.epam.esm.domain.dto.TagDto;
 import com.epam.esm.web.controller.TagController;
 import com.epam.esm.web.hateoas.HateoasAdder;
 import org.springframework.hateoas.PagedModel;

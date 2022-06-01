@@ -1,13 +1,13 @@
 package com.epam.esm.service.service.impl;
 
+import com.epam.esm.domain.criteria.GiftCertificateCriteria;
+import com.epam.esm.domain.dto.GiftCertificateDto;
+import com.epam.esm.domain.entity.GiftCertificate;
+import com.epam.esm.domain.entity.Tag;
 import com.epam.esm.repository.dao.GiftCertificateDao;
 import com.epam.esm.repository.dao.TagDao;
-import com.epam.esm.repository.entity.GiftCertificate;
-import com.epam.esm.repository.entity.Tag;
-import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
-import com.epam.esm.service.dto.GiftCertificateDto;
-import com.epam.esm.service.dto.converter.impl.GiftCertificateConverter;
-import com.epam.esm.service.dto.converter.impl.TagConverter;
+import com.epam.esm.service.converter.impl.GiftCertificateConverter;
+import com.epam.esm.service.converter.impl.TagConverter;
 import com.epam.esm.service.exception.DuplicateEntityException;
 import com.epam.esm.service.exception.ExceptionHolder;
 import com.epam.esm.service.exception.IncorrectParameterException;
@@ -21,10 +21,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.epam.esm.service.exception.ExceptionMessageKey.GIFT_CERTIFICATE_EXIST;
@@ -33,6 +30,7 @@ import static com.epam.esm.service.exception.ExceptionMessageKey.GIFT_CERTIFICAT
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
+
 
     private final GiftCertificateDao giftCertificateDao;
     private final TagDao tagDao;
@@ -98,6 +96,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public PagedModel<GiftCertificateDto> readByCriteria(GiftCertificateCriteria criteria, Integer page, Integer limit) {
         ExceptionHolder exceptionHolder = new ExceptionHolder();
+
         GiftCertificateCriteriaValidator.isCriteriaValid(criteria, exceptionHolder);
         if (!exceptionHolder.getExceptionMessages().isEmpty()) {
             throw new IncorrectParameterException(exceptionHolder);

@@ -1,7 +1,7 @@
 package com.epam.esm.web.hateoas.impl;
 
-import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
-import com.epam.esm.service.dto.GiftCertificateDto;
+import com.epam.esm.domain.criteria.GiftCertificateCriteria;
+import com.epam.esm.domain.dto.GiftCertificateDto;
 import com.epam.esm.web.controller.GiftCertificateController;
 import com.epam.esm.web.controller.TagController;
 import com.epam.esm.web.hateoas.HateoasAdder;

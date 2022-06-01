@@ -1,9 +1,9 @@
 package com.epam.esm.repository.dao.impl;
 
+import com.epam.esm.domain.criteria.GiftCertificateCriteria;
+import com.epam.esm.domain.entity.GiftCertificate;
 import com.epam.esm.repository.creator.GiftCertificateQueryCreator;
 import com.epam.esm.repository.dao.GiftCertificateDao;
-import com.epam.esm.repository.entity.GiftCertificate;
-import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

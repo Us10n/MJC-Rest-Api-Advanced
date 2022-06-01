@@ -1,7 +1,7 @@
 package com.epam.esm.service.util.validator;
 
-import com.epam.esm.repository.entity.Tag;
-import com.epam.esm.service.dto.GiftCertificateDto;
+import com.epam.esm.domain.dto.GiftCertificateDto;
+import com.epam.esm.domain.entity.Tag;
 import com.epam.esm.service.exception.ExceptionHolder;
 import lombok.experimental.UtilityClass;
 

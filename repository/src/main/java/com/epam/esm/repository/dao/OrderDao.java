@@ -1,8 +1,7 @@
 package com.epam.esm.repository.dao;
 
-import com.epam.esm.repository.entity.OrderDetail;
+import com.epam.esm.domain.entity.OrderDetail;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 

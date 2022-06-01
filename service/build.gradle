@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     implementation project(':repository')
+    implementation project(':domain')
 
     testImplementation 'org.springframework:spring-test:5.3.4'
     implementation 'org.springframework:spring-context:5.3.7'

@@ -1,7 +1,7 @@
 package com.epam.esm.web.controller;
 
-import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
-import com.epam.esm.service.dto.GiftCertificateDto;
+import com.epam.esm.domain.criteria.GiftCertificateCriteria;
+import com.epam.esm.domain.dto.GiftCertificateDto;
 import com.epam.esm.service.service.GiftCertificateService;
 import com.epam.esm.web.hateoas.impl.GiftCertificateHateoasAdder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -22,8 +23,8 @@ import java.util.Set;
 @RequestMapping("/giftCertificates")
 public class GiftCertificateController {
 
-    private GiftCertificateService giftCertificateService;
-    private GiftCertificateHateoasAdder giftCertificateHateoasAdder;
+    private final GiftCertificateService giftCertificateService;
+    private final GiftCertificateHateoasAdder giftCertificateHateoasAdder;
 
     /**
      * Instantiates a new Gift certificate controller.

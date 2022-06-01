@@ -1,9 +1,7 @@
 package com.epam.esm.repository.dao;
 
-import com.epam.esm.repository.entity.GiftCertificate;
-import com.epam.esm.repository.entity.Tag;
+import com.epam.esm.domain.entity.Tag;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

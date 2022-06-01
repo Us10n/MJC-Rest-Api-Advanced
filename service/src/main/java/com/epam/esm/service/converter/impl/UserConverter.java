@@ -1,8 +1,8 @@
-package com.epam.esm.service.dto.converter.impl;
+package com.epam.esm.service.converter.impl;
 
-import com.epam.esm.repository.entity.User;
-import com.epam.esm.service.dto.converter.DtoEntityConverter;
-import com.epam.esm.service.dto.UserDto;
+import com.epam.esm.domain.dto.UserDto;
+import com.epam.esm.domain.entity.User;
+import com.epam.esm.service.converter.DtoEntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

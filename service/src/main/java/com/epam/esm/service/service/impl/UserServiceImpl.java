@@ -1,9 +1,9 @@
 package com.epam.esm.service.service.impl;
 
+import com.epam.esm.domain.dto.UserDto;
+import com.epam.esm.domain.entity.User;
 import com.epam.esm.repository.dao.UserDao;
-import com.epam.esm.repository.entity.User;
-import com.epam.esm.service.dto.UserDto;
-import com.epam.esm.service.dto.converter.impl.UserConverter;
+import com.epam.esm.service.converter.impl.UserConverter;
 import com.epam.esm.service.exception.NoSuchElementException;
 import com.epam.esm.service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

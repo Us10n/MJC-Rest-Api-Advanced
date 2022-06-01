@@ -1,7 +1,7 @@
 package com.epam.esm.web.controller;
 
-import com.epam.esm.service.dto.Order;
-import com.epam.esm.service.dto.OrderDetailDto;
+import com.epam.esm.domain.dto.Order;
+import com.epam.esm.domain.dto.OrderDetailDto;
 import com.epam.esm.service.service.OrderService;
 import com.epam.esm.web.hateoas.impl.OrderHateoasAdder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,8 @@ import javax.validation.constraints.Positive;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private OrderService orderService;
-    private OrderHateoasAdder orderHateoasAdder;
+    private final OrderService orderService;
+    private final OrderHateoasAdder orderHateoasAdder;
 
     @Autowired
     public OrderController(OrderService orderService, OrderHateoasAdder hateoasAdder) {

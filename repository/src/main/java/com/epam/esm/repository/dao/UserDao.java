@@ -1,6 +1,6 @@
 package com.epam.esm.repository.dao;
 
-import com.epam.esm.repository.entity.User;
+import com.epam.esm.domain.entity.User;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,6 +1,6 @@
 package com.epam.esm.service.util.validator;
 
-import com.epam.esm.service.dto.TagDto;
+import com.epam.esm.domain.dto.TagDto;
 import com.epam.esm.service.exception.ExceptionHolder;
 import lombok.experimental.UtilityClass;
 

@@ -1,4 +1,4 @@
-package com.epam.esm.service.dto.converter;
+package com.epam.esm.service.converter;
 
 public interface DtoEntityConverter<T, R> {
     T convertToDto(R object);

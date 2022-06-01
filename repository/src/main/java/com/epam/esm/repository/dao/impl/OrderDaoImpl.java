@@ -1,7 +1,7 @@
 package com.epam.esm.repository.dao.impl;
 
+import com.epam.esm.domain.entity.OrderDetail;
 import com.epam.esm.repository.dao.OrderDao;
-import com.epam.esm.repository.entity.OrderDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

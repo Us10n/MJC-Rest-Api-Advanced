@@ -1,7 +1,7 @@
 package com.epam.esm.repository.dao.impl;
 
+import com.epam.esm.domain.entity.User;
 import com.epam.esm.repository.dao.UserDao;
-import com.epam.esm.repository.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

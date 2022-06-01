@@ -1,4 +1,4 @@
-package com.epam.esm.service.dto;
+package com.epam.esm.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

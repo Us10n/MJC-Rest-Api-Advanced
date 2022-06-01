@@ -1,6 +1,6 @@
 package com.epam.esm.web.controller;
 
-import com.epam.esm.service.dto.UserDto;
+import com.epam.esm.domain.dto.UserDto;
 import com.epam.esm.service.service.UserService;
 import com.epam.esm.web.hateoas.impl.UserHateoasAdder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ import javax.validation.constraints.Positive;
 @RequestMapping("/users")
 public class UserController {
 
-    private UserService userService;
-    private UserHateoasAdder userHateoasAdder;
+    private final UserService userService;
+    private final UserHateoasAdder userHateoasAdder;
 
     @Autowired
     public UserController(UserService userService, UserHateoasAdder hateoasAdder) {

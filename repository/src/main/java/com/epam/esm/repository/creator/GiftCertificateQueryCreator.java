@@ -1,7 +1,7 @@
 package com.epam.esm.repository.creator;
 
-import com.epam.esm.repository.entity.GiftCertificate;
-import com.epam.esm.repository.entity.criteria.GiftCertificateCriteria;
+import com.epam.esm.domain.criteria.GiftCertificateCriteria;
+import com.epam.esm.domain.entity.GiftCertificate;
 import lombok.experimental.UtilityClass;
 
 import javax.persistence.criteria.CriteriaBuilder;

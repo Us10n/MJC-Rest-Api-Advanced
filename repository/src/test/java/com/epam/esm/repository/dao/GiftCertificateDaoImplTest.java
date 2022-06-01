@@ -1,7 +1,7 @@
 //package com.epam.esm.repository.dao;
 //
 //import com.epam.esm.repository.config.TestConfig;
-//import com.epam.esm.repository.entity.GiftCertificate;
+//import com.epam.esm.domain.entity.GiftCertificate;
 //import org.junit.jupiter.api.Assertions;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;

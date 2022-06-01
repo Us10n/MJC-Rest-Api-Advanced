@@ -1,10 +1,10 @@
-package com.epam.esm.service.dto.converter.impl;
+package com.epam.esm.service.converter.impl;
 
-import com.epam.esm.repository.entity.GiftCertificate;
-import com.epam.esm.repository.entity.Tag;
-import com.epam.esm.service.dto.GiftCertificateDto;
-import com.epam.esm.service.dto.TagDto;
-import com.epam.esm.service.dto.converter.DtoEntityConverter;
+import com.epam.esm.domain.dto.GiftCertificateDto;
+import com.epam.esm.domain.dto.TagDto;
+import com.epam.esm.domain.entity.GiftCertificate;
+import com.epam.esm.domain.entity.Tag;
+import com.epam.esm.service.converter.DtoEntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

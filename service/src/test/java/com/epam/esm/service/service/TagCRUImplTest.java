@@ -2,7 +2,7 @@
 //
 //import com.epam.esm.repository.dao.GiftCertificateDao;
 //import com.epam.esm.repository.dao.TagDao;
-//import com.epam.esm.repository.entity.Tag;
+//import com.epam.esm.domain.entity.Tag;
 //import com.epam.esm.service.config.ServiceConfigTest;
 //import com.epam.esm.service.crud.impl.TagCRUImpl;
 //import com.epam.esm.service.dto.TagDto;
