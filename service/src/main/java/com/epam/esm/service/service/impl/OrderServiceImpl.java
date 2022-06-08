@@ -1,6 +1,6 @@
 package com.epam.esm.service.service.impl;
 
-import com.epam.esm.domain.dto.Order;
+import com.epam.esm.domain.entity.Order;
 import com.epam.esm.domain.dto.OrderDetailDto;
 import com.epam.esm.domain.entity.GiftCertificate;
 import com.epam.esm.domain.entity.OrderDetail;
@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 
 import static com.epam.esm.service.exception.ExceptionMessageKey.*;
 
+/**
+ * The type Order service.
+ */
 @Component
 public class OrderServiceImpl implements OrderService {
 
@@ -33,6 +36,14 @@ public class OrderServiceImpl implements OrderService {
     private final UserDao userDao;
     private final GiftCertificateDao giftCertificateDao;
 
+    /**
+     * Instantiates a new Order service.
+     *
+     * @param orderDao           the order dao
+     * @param orderConverter     the order converter
+     * @param userDao            the user dao
+     * @param giftCertificateDao the gift certificate dao
+     */
     @Autowired
     public OrderServiceImpl(OrderDao orderDao, OrderConverter orderConverter,
                             UserDao userDao, GiftCertificateDao giftCertificateDao) {
@@ -63,9 +74,9 @@ public class OrderServiceImpl implements OrderService {
         orderDetail.setUser(customer.get());
         orderDetail.setPrice(requestedCertificate.get().getPrice());
         orderDetail.setPurchaseTime(DateHandler.getCurrentDate());
-        orderDao.create(orderDetail);
+        OrderDetail createdOrder = orderDao.create(orderDetail);
 
-        return orderConverter.convertToDto(orderDetail);
+        return orderConverter.convertToDto(createdOrder);
     }
 
     @Override

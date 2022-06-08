@@ -16,9 +16,9 @@ public class TagHateoasAdder implements HateoasAdder<TagDto> {
 
     @Override
     public void addLinksToEntity(TagDto entity) {
-        entity.add(linkTo(methodOn(TAG_CONTROLLER).readTadById(entity.getTagId())).withSelfRel());
-        entity.add(linkTo(methodOn(TAG_CONTROLLER).deleteTag(entity.getTagId())).withRel("delete"));
-        entity.add(linkTo(methodOn(TAG_CONTROLLER).createTag(entity)).withRel("create"));
+        entity.add(linkTo(methodOn(TAG_CONTROLLER).readTadById(entity.getTagId())).withSelfRel().withType("GET"));
+        entity.add(linkTo(methodOn(TAG_CONTROLLER).deleteTag(entity.getTagId())).withRel("delete").withType("POST"));
+        entity.add(linkTo(methodOn(TAG_CONTROLLER).createTag(entity)).withRel("create").withType("POST"));
     }
 
     @Override
@@ -28,14 +28,14 @@ public class TagHateoasAdder implements HateoasAdder<TagDto> {
         int limit = (int) metadata.getSize();
         int totalPages = (int) metadata.getTotalPages();
 
-        model.add(linkTo(methodOn(TAG_CONTROLLER).readAllTags(page, limit)).withSelfRel());
+        model.add(linkTo(methodOn(TAG_CONTROLLER).readAllTags(page, limit)).withSelfRel().withType("GET"));
         if (page < totalPages) {
-            model.add(linkTo(methodOn(TAG_CONTROLLER).readAllTags(page + 1, limit)).withRel("next"));
+            model.add(linkTo(methodOn(TAG_CONTROLLER).readAllTags(page + 1, limit)).withRel("next").withType("GET"));
         }
         if (page > 1) {
-            model.add(linkTo(methodOn(TAG_CONTROLLER).readAllTags(page - 1, limit)).withRel("prev"));
+            model.add(linkTo(methodOn(TAG_CONTROLLER).readAllTags(page - 1, limit)).withRel("prev").withType("GET"));
         }
-        model.add(linkTo(methodOn(TAG_CONTROLLER).readWidelyUsedTag()).withRel("popular"));
+        model.add(linkTo(methodOn(TAG_CONTROLLER).readWidelyUsedTag()).withRel("popular").withType("GET"));
         model.getContent().forEach(this::addLinksToEntity);
 
     }

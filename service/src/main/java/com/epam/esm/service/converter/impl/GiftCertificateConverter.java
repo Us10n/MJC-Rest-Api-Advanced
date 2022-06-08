@@ -12,10 +12,22 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * The type Gift certificate converter.
+ */
 @Component
 public class GiftCertificateConverter implements DtoEntityConverter<GiftCertificateDto, GiftCertificate> {
+    private final TagConverter tagConverter;
+
+    /**
+     * Instantiates a new Gift certificate converter.
+     *
+     * @param tagConverter the tag converter
+     */
     @Autowired
-    private TagConverter tagConverter;
+    public GiftCertificateConverter(TagConverter tagConverter) {
+        this.tagConverter = tagConverter;
+    }
 
     @Override
     public GiftCertificateDto convertToDto(GiftCertificate object) {
@@ -27,8 +39,10 @@ public class GiftCertificateConverter implements DtoEntityConverter<GiftCertific
         giftCertificateDto.setDuration(object.getDuration());
         giftCertificateDto.setCreateDate(object.getCreateDate());
         giftCertificateDto.setLastUpdateDate(object.getLastUpdateDate());
-        List<TagDto> tags = object.getTags().stream().map(tagConverter::convertToDto).collect(Collectors.toList());
-        giftCertificateDto.setTags(tags);
+        if (object.getTags() != null) {
+            List<TagDto> tags = object.getTags().stream().map(tagConverter::convertToDto).collect(Collectors.toList());
+            giftCertificateDto.setTags(tags);
+        }
         return giftCertificateDto;
     }
 
@@ -42,8 +56,10 @@ public class GiftCertificateConverter implements DtoEntityConverter<GiftCertific
         giftCertificate.setDuration(object.getDuration());
         giftCertificate.setCreateDate(object.getCreateDate());
         giftCertificate.setLastUpdateDate(object.getLastUpdateDate());
-        Set<Tag> tags = object.getTags().stream().map(tagConverter::convertToEntity).collect(Collectors.toSet());
-        giftCertificate.setTags(tags);
+        if (object.getTags() != null) {
+            Set<Tag> tags = object.getTags().stream().map(tagConverter::convertToEntity).collect(Collectors.toSet());
+            giftCertificate.setTags(tags);
+        }
         return giftCertificate;
     }
 }

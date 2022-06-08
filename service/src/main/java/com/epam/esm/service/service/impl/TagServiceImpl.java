@@ -21,12 +21,21 @@ import java.util.stream.Collectors;
 import static com.epam.esm.service.exception.ExceptionMessageKey.TAG_EXIST;
 import static com.epam.esm.service.exception.ExceptionMessageKey.TAG_NOT_FOUND;
 
+/**
+ * The type Tag service.
+ */
 @Service
 public class TagServiceImpl implements TagService {
 
     private final TagDao tagDao;
     private final TagConverter tagConverter;
 
+    /**
+     * Instantiates a new Tag service.
+     *
+     * @param tagDao       the tag dao
+     * @param tagConverter the tag converter
+     */
     @Autowired
     public TagServiceImpl(TagDao tagDao, TagConverter tagConverter) {
         this.tagDao = tagDao;

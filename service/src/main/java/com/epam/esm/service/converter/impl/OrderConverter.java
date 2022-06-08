@@ -5,6 +5,9 @@ import com.epam.esm.domain.entity.OrderDetail;
 import com.epam.esm.service.converter.DtoEntityConverter;
 import org.springframework.stereotype.Component;
 
+/**
+ * The type Order converter.
+ */
 @Component
 public class OrderConverter implements DtoEntityConverter<OrderDetailDto, OrderDetail> {
 

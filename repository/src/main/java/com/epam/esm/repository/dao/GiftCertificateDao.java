@@ -19,6 +19,14 @@ public interface GiftCertificateDao extends Dao<GiftCertificate> {
      */
     GiftCertificate update(GiftCertificate giftCertificate);
 
+    /**
+     * Find objects based on criteria.
+     *
+     * @param criteria the criteria
+     * @param page     the page number
+     * @param limit    page size
+     * @return limit objects from page.
+     */
     List<GiftCertificate> findByCriteria(GiftCertificateCriteria criteria, int page, int limit);
 
     /**
@@ -28,4 +36,12 @@ public interface GiftCertificateDao extends Dao<GiftCertificate> {
      * @return {@link Optional Optional.ofNullable()} of found object.
      */
     Optional<GiftCertificate> findByName(String name);
+
+    /**
+     * Count amount of objects based on criteria.
+     *
+     * @param criteria the criteria
+     * @return amount
+     */
+    long countAllByCriteria(GiftCertificateCriteria criteria);
 }

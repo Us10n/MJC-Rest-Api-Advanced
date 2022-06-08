@@ -16,14 +16,17 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Gift certificate dao.
+ */
 @Repository
 @RequiredArgsConstructor
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private static final String FIND_ALL_QUERY = "SELECT gift_certificates.id, gift_certificates.name, gift_certificates.description, gift_certificates.price, " +
             "gift_certificates.duration, gift_certificates.create_date, gift_certificates.last_update_date " +
-            "FROM module.gift_certificates";
+            "FROM gift_certificates";
     private static final String FIND_BY_NAME_QUERY = FIND_ALL_QUERY + " WHERE name=:certName";
-    private static final String DETACH_ALL_TAGS_BY_ID_QUERY = "DELETE FROM module.gift_certificate_tags WHERE gift_certificate_id=:certificateId";
+    private static final String DETACH_ALL_TAGS_BY_ID_QUERY = "DELETE FROM gift_certificate_tags WHERE gift_certificate_id=:certificateId";
     private static final String COUNT_ENTITIES_HQUERY = "SELECT count(crt) FROM GiftCertificate crt";
 
     @PersistenceContext
@@ -68,6 +71,14 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     @Override
     public long countAll() {
         return entityManager.createQuery(COUNT_ENTITIES_HQUERY, Long.class).getSingleResult();
+    }
+
+    public long countAllByCriteria(GiftCertificateCriteria criteria) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<GiftCertificate> criteriaQuery = GiftCertificateQueryCreator.buildGetQueryByCriteria(criteria, criteriaBuilder);
+        return entityManager.createQuery(criteriaQuery)
+                .getResultList()
+                .size();
     }
 
     @Override

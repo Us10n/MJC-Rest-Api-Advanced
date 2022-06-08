@@ -1,6 +1,6 @@
 package com.epam.esm.web.hateoas.impl;
 
-import com.epam.esm.domain.dto.Order;
+import com.epam.esm.domain.entity.Order;
 import com.epam.esm.domain.dto.OrderDetailDto;
 import com.epam.esm.web.controller.OrderController;
 import com.epam.esm.web.hateoas.HateoasAdder;
@@ -17,10 +17,10 @@ public class OrderHateoasAdder implements HateoasAdder<OrderDetailDto> {
 
     @Override
     public void addLinksToEntity(OrderDetailDto entity) {
-        entity.add(linkTo(methodOn(ORDER_CONTROLLER).readOrderById(entity.getOrderId())).withSelfRel());
-        entity.add(linkTo(methodOn(ORDER_CONTROLLER).readOrdersByUserId(entity.getUserId(),1,10)).withRel("userOrders"));
+        entity.add(linkTo(methodOn(ORDER_CONTROLLER).readOrderById(entity.getOrderId())).withSelfRel().withType("GET"));
+        entity.add(linkTo(methodOn(ORDER_CONTROLLER).readOrdersByUserId(entity.getUserId(),1,10)).withRel("userOrders").withType("GET"));
         Order order=new Order(entity.getUserId(),entity.getGiftCertificateId());
-        entity.add(linkTo(methodOn(ORDER_CONTROLLER).createOrder(order)).withRel("create"));
+        entity.add(linkTo(methodOn(ORDER_CONTROLLER).createOrder(order)).withRel("create").withType("POST"));
     }
 
     @Override
@@ -32,10 +32,10 @@ public class OrderHateoasAdder implements HateoasAdder<OrderDetailDto> {
 
         model.add(linkTo(methodOn(ORDER_CONTROLLER).readAllOrders(page, limit)).withSelfRel());
         if (page < totalPages) {
-            model.add(linkTo(methodOn(ORDER_CONTROLLER).readAllOrders(page + 1, limit)).withRel("next"));
+            model.add(linkTo(methodOn(ORDER_CONTROLLER).readAllOrders(page + 1, limit)).withRel("next").withType("GET"));
         }
         if (page > 1) {
-            model.add(linkTo(methodOn(ORDER_CONTROLLER).readAllOrders(page - 1, limit)).withRel("prev"));
+            model.add(linkTo(methodOn(ORDER_CONTROLLER).readAllOrders(page - 1, limit)).withRel("prev").withType("GET"));
         }
         model.getContent().forEach(this::addLinksToEntity);
     }

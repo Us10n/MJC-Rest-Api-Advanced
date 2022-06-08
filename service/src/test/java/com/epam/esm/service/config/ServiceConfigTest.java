@@ -1,18 +1,19 @@
 package com.epam.esm.service.config;
 
 import com.epam.esm.repository.dao.GiftCertificateDao;
+import com.epam.esm.repository.dao.OrderDao;
 import com.epam.esm.repository.dao.TagDao;
+import com.epam.esm.repository.dao.UserDao;
 import com.epam.esm.repository.dao.impl.GiftCertificateDaoImpl;
+import com.epam.esm.repository.dao.impl.OrderDaoImpl;
 import com.epam.esm.repository.dao.impl.TagDaoImpl;
-import com.epam.esm.service.handler.DateHandler;
+import com.epam.esm.repository.dao.impl.UserDaoImpl;
 import org.mockito.Mockito;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 
 @Configuration
-@Profile("test")
+@ComponentScan(basePackages = {"com.epam.esm"})
+@PropertySource(value = {"classpath:application.properties"})
 public class ServiceConfigTest {
 
     @Bean
@@ -29,7 +30,13 @@ public class ServiceConfigTest {
 
     @Bean
     @Primary
-    public DateHandler dateHandler() {
-        return Mockito.mock(DateHandler.class);
+    public OrderDao orderDao() {
+        return Mockito.mock(OrderDaoImpl.class);
+    }
+
+    @Bean
+    @Primary
+    public UserDao userDao() {
+        return Mockito.mock(UserDaoImpl.class);
     }
 }

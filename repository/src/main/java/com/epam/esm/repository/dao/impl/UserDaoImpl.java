@@ -13,6 +13,9 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type User dao.
+ */
 @Repository
 @RequiredArgsConstructor
 public class UserDaoImpl implements UserDao {

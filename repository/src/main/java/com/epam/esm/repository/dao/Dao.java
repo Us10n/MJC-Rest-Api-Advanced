@@ -7,7 +7,7 @@ import java.util.Optional;
  * Data access object that performs operations with databases
  *
  * @param <T> define model DAO operates with
- * @see GiftCertificateDao,TagDao
+ * @see , GiftCertificateDaoTagDao
  */
 public interface Dao<T> {
     /**
@@ -26,8 +26,20 @@ public interface Dao<T> {
      */
     Optional<T> findById(long id);
 
+    /**
+     * Find limit entities from page.
+     *
+     * @param page  the page number
+     * @param limit the page size
+     * @return found objects
+     */
     List<T> findAll(int page, int limit);
 
+    /**
+     * Count amount of all objects.
+     *
+     * @return amount
+     */
     long countAll();
 
     /**

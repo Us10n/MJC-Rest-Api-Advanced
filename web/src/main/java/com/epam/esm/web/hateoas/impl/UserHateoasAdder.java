@@ -16,7 +16,7 @@ public class UserHateoasAdder implements HateoasAdder<UserDto> {
 
     @Override
     public void addLinksToEntity(UserDto entity) {
-        entity.add(linkTo(methodOn(USER_CONTROLLER).readUserById(entity.getUserId())).withSelfRel());
+        entity.add(linkTo(methodOn(USER_CONTROLLER).readUserById(entity.getUserId())).withSelfRel().withType("GET"));
     }
 
     @Override
@@ -26,12 +26,12 @@ public class UserHateoasAdder implements HateoasAdder<UserDto> {
         int limit = (int) metadata.getSize();
         int totalPages = (int) metadata.getTotalPages();
 
-        model.add(linkTo(methodOn(USER_CONTROLLER).readAllUsers(page, limit)).withSelfRel());
+        model.add(linkTo(methodOn(USER_CONTROLLER).readAllUsers(page, limit)).withSelfRel().withType("GET"));
         if (page < totalPages) {
-            model.add(linkTo(methodOn(USER_CONTROLLER).readAllUsers(page + 1, limit)).withRel("next"));
+            model.add(linkTo(methodOn(USER_CONTROLLER).readAllUsers(page + 1, limit)).withRel("next").withType("GET"));
         }
         if (page > 1) {
-            model.add(linkTo(methodOn(USER_CONTROLLER).readAllUsers(page - 1, limit)).withRel("prev"));
+            model.add(linkTo(methodOn(USER_CONTROLLER).readAllUsers(page - 1, limit)).withRel("prev").withType("GET"));
         }
         model.getContent().forEach(this::addLinksToEntity);
     }

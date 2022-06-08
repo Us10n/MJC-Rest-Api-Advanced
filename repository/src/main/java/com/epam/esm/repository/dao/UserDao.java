@@ -15,7 +15,19 @@ public interface UserDao {
      */
     Optional<User> findById(long id);
 
+    /**
+     * Find limit entities from page.
+     *
+     * @param page  the page number
+     * @param limit the page size
+     * @return found objects
+     */
     List<User> findAll(int page, int limit);
 
+    /**
+     * Count amount of all objects.
+     *
+     * @return amount
+     */
     long countAll();
 }

@@ -8,6 +8,9 @@ import org.hibernate.envers.Audited;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * The type Order detail.
+ */
 @Entity
 @Data
 @AllArgsConstructor

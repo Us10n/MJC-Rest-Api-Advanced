@@ -1,5 +1,8 @@
 package com.epam.esm.service.exception;
 
+/**
+ * Class contains keys for exception messages.
+ */
 public final class ExceptionMessageKey {
 
     public static final String NULL_PASSED = "error.nullPassed";

@@ -5,6 +5,9 @@ import com.epam.esm.domain.entity.Tag;
 import com.epam.esm.service.converter.DtoEntityConverter;
 import org.springframework.stereotype.Component;
 
+/**
+ * The type Tag converter.
+ */
 @Component
 public class TagConverter implements DtoEntityConverter<TagDto, Tag> {
     @Override

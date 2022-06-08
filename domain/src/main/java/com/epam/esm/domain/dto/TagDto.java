@@ -13,7 +13,11 @@ import org.springframework.hateoas.server.core.Relation;
 @NoArgsConstructor
 @AllArgsConstructor
 @Relation(collectionRelation = "tags")
-public class TagDto  extends RepresentationModel<TagDto> {
+public class TagDto extends RepresentationModel<TagDto> {
     private long tagId;
     private String name;
+
+    public TagDto(String name) {
+        this.name = name;
+    }
 }

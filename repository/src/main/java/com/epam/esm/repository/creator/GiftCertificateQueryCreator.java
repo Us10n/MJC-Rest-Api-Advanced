@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Gift certificate query creator utility class.
+ */
 @UtilityClass
 public class GiftCertificateQueryCreator {
     private static final String PERCENT = "%";
@@ -23,6 +26,13 @@ public class GiftCertificateQueryCreator {
     private static final String CREATE_DATE = "createDate";
     private static final String TAGS_TABLE = "tags";
 
+    /**
+     * Build get query based on criteria.
+     *
+     * @param criteria        the criteria
+     * @param criteriaBuilder the criteria builder
+     * @return the criteria query
+     */
     public CriteriaQuery<GiftCertificate> buildGetQueryByCriteria(GiftCertificateCriteria criteria, CriteriaBuilder criteriaBuilder) {
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> giftCertificateRoot = criteriaQuery.from(GiftCertificate.class);
@@ -64,8 +74,9 @@ public class GiftCertificateQueryCreator {
     private void addSortByName(GiftCertificateCriteria criteria, CriteriaBuilder criteriaBuilder,
                                CriteriaQuery<GiftCertificate> criteriaQuery, Root<GiftCertificate> root) {
         String sortOrder = criteria.getSortOrder();
+        String sortBy = criteria.getSortBy();
 
-        if (sortOrder != null) {
+        if (sortOrder != null && sortBy != null && sortBy.equalsIgnoreCase(NAME)) {
             if (sortOrder.equalsIgnoreCase(ASC)) {
                 criteriaQuery.orderBy(criteriaBuilder.asc(root.get(NAME)));
             }
@@ -78,8 +89,9 @@ public class GiftCertificateQueryCreator {
     private void addSortByCreateDate(GiftCertificateCriteria criteria, CriteriaBuilder criteriaBuilder,
                                      CriteriaQuery<GiftCertificate> criteriaQuery, Root<GiftCertificate> root) {
         String sortOrder = criteria.getSortOrder();
+        String sortBy = criteria.getSortBy();
 
-        if (sortOrder != null) {
+        if (sortOrder != null && sortBy != null && sortBy.equalsIgnoreCase(CREATE_DATE)) {
             if (sortOrder.equalsIgnoreCase(ASC)) {
                 criteriaQuery.orderBy(criteriaBuilder.asc(root.get(CREATE_DATE)));
             }

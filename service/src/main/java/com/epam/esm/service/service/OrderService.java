@@ -1,15 +1,45 @@
 package com.epam.esm.service.service;
 
-import com.epam.esm.domain.dto.Order;
+import com.epam.esm.domain.entity.Order;
 import com.epam.esm.domain.dto.OrderDetailDto;
 import org.springframework.hateoas.PagedModel;
 
+/**
+ * The interface Order service.
+ */
 public interface OrderService {
+    /**
+     * Create order detail dto.
+     *
+     * @param object the object
+     * @return the order detail dto
+     */
     OrderDetailDto create(Order object);
 
+    /**
+     * Read all paged model.
+     *
+     * @param page  the page
+     * @param limit the limit
+     * @return the paged model
+     */
     PagedModel<OrderDetailDto> readAll(Integer page, Integer limit);
 
+    /**
+     * Read by id order detail dto.
+     *
+     * @param id the id
+     * @return the order detail dto
+     */
     OrderDetailDto readById(long id);
 
+    /**
+     * Read orders by user id paged model.
+     *
+     * @param id    the id
+     * @param page  the page
+     * @param limit the limit
+     * @return the paged model
+     */
     PagedModel<OrderDetailDto> readOrdersByUserId(long id, Integer page, Integer limit);
 }

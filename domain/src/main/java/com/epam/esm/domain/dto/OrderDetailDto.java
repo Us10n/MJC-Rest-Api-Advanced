@@ -8,6 +8,9 @@ import org.springframework.hateoas.server.core.Relation;
 
 import java.time.LocalDateTime;
 
+/**
+ * Data transfer object for OrderDetail
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

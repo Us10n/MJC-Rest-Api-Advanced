@@ -28,6 +28,9 @@ import static com.epam.esm.service.exception.ExceptionMessageKey.GIFT_CERTIFICAT
 import static com.epam.esm.service.exception.ExceptionMessageKey.GIFT_CERTIFICATE_NOT_FOUND;
 
 
+/**
+ * The type Gift certificate service.
+ */
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
@@ -37,6 +40,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final GiftCertificateConverter giftCertificateConverter;
     private final TagConverter tagConverter;
 
+    /**
+     * Instantiates a new Gift certificate service.
+     *
+     * @param giftCertificateDao       the gift certificate dao
+     * @param tagDao                   the tag dao
+     * @param giftCertificateConverter the gift certificate converter
+     * @param tagConverter             the tag converter
+     */
     @Autowired
     public GiftCertificateServiceImpl(GiftCertificateDao giftCertificateDao, TagDao tagDao,
                                       GiftCertificateConverter giftCertificateConverter, TagConverter tagConverter) {
@@ -106,7 +117,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         List<GiftCertificateDto> certificateDtos = foundCertificates.stream()
                 .map(giftCertificateConverter::convertToDto)
                 .collect(Collectors.toList());
-        long totalNumberOfEntities = giftCertificateDao.countAll();
+        long totalNumberOfEntities = giftCertificateDao.countAllByCriteria(criteria);
         PagedModel.PageMetadata metadata = new PagedModel.PageMetadata(limit, page, totalNumberOfEntities);
         return PagedModel.of(certificateDtos, metadata);
     }

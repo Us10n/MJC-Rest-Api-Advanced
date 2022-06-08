@@ -14,13 +14,15 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Order dao.
+ */
 @Repository
 @RequiredArgsConstructor
 public class OrderDaoImpl implements OrderDao {
 
     private static final String FIND_ORDERS_BY_USER_ID="SELECT o FROM OrderDetail o WHERE o.user.id = :userId";
     private static final String COUNT_ENTITIES_HQUERY = "SELECT count(o) FROM OrderDetail o";
-
 
     @PersistenceContext
     private final EntityManager entityManager;

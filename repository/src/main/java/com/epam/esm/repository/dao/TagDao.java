@@ -16,5 +16,10 @@ public interface TagDao extends Dao<Tag> {
      */
     Optional<Tag> findByName(String name);
 
+    /**
+     * Find widely used tag of user with highest cost of all orders optional.
+     *
+     * @return found tag.
+     */
     Optional<Tag> findWidelyUsedTagOfUserWithHighestCostOfAllOrders();
 }

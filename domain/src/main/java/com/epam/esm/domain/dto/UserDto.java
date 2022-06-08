@@ -8,6 +8,9 @@ import org.springframework.hateoas.server.core.Relation;
 
 import java.util.List;
 
+/**
+ * Data transfer object for User
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

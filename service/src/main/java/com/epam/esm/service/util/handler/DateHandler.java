@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @UtilityClass
 public class DateHandler {
     /**
+     * Gets current date.
      *
      * @return current date Time
      */

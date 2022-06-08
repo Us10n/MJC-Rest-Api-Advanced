@@ -16,12 +16,21 @@ import java.util.stream.Collectors;
 
 import static com.epam.esm.service.exception.ExceptionMessageKey.USER_NOT_FOUND;
 
+/**
+ * The type User service.
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserConverter userConverter;
     private final UserDao userDao;
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param converter the converter
+     * @param userDao   the user dao
+     */
     @Autowired
     public UserServiceImpl(UserConverter converter, UserDao userDao) {
         this.userConverter = converter;

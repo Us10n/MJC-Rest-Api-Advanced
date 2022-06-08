@@ -8,6 +8,9 @@ import org.hibernate.envers.Audited;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * The type User.
+ */
 @Entity
 @Data
 @AllArgsConstructor

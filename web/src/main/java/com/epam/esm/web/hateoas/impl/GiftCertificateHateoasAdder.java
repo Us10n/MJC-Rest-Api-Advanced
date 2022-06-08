@@ -23,12 +23,12 @@ public class GiftCertificateHateoasAdder implements HateoasAdder<GiftCertificate
 
     @Override
     public void addLinksToEntity(GiftCertificateDto entity) {
-        entity.add(linkTo(methodOn(GIFT_CERTIFICATE_CONTROLLER).readGiftCertificateById(entity.getGiftCertificateId())).withSelfRel());
-        entity.add(linkTo(methodOn(GIFT_CERTIFICATE_CONTROLLER).createGiftCertificate(entity)).withRel("create"));
-        entity.add(linkTo(methodOn(GIFT_CERTIFICATE_CONTROLLER).updateGiftCertificate(entity.getGiftCertificateId(), entity)).withRel("update"));
-        entity.add(linkTo(methodOn(GIFT_CERTIFICATE_CONTROLLER).deleteGiftCertificateById(entity.getGiftCertificateId())).withRel("delete"));
+        entity.add(linkTo(methodOn(GIFT_CERTIFICATE_CONTROLLER).readGiftCertificateById(entity.getGiftCertificateId())).withSelfRel().withType("GET"));
+        entity.add(linkTo(methodOn(GIFT_CERTIFICATE_CONTROLLER).createGiftCertificate(entity)).withRel("create").withType("POST"));
+        entity.add(linkTo(methodOn(GIFT_CERTIFICATE_CONTROLLER).updateGiftCertificate(entity.getGiftCertificateId(), entity)).withRel("update").withType("PATCH"));
+        entity.add(linkTo(methodOn(GIFT_CERTIFICATE_CONTROLLER).deleteGiftCertificateById(entity.getGiftCertificateId())).withRel("delete").withType("POST"));
         entity.getTags().forEach(
-                tagDto -> tagDto.add(linkTo(methodOn(TAG_CONTROLLER).readTadById(tagDto.getTagId())).withSelfRel()));
+                tagDto -> tagDto.add(linkTo(methodOn(TAG_CONTROLLER).readTadById(tagDto.getTagId())).withSelfRel().withType("GET")));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class GiftCertificateHateoasAdder implements HateoasAdder<GiftCertificate
                 .toUriComponentsBuilder()
                 .toUriString()
                 .replaceAll(REDUNDANT_INFO, EMPTY);
-        model.add(Link.of(selfLinkString, "self"));
+        model.add(Link.of(selfLinkString, "self").withType("GET"));
         if (page < totalPages) {
             String nextLinkString = linkTo(methodOn(GIFT_CERTIFICATE_CONTROLLER)
                     .readAllGiftCertificates(criteria.getTagNames(),
@@ -58,7 +58,7 @@ public class GiftCertificateHateoasAdder implements HateoasAdder<GiftCertificate
                     .toUriComponentsBuilder()
                     .toUriString()
                     .replaceAll(REDUNDANT_INFO, EMPTY);
-            model.add(Link.of(nextLinkString, "next"));
+            model.add(Link.of(nextLinkString, "next").withType("GET"));
         }
         if (page > 1) {
             String prevLinkString = linkTo(methodOn(GIFT_CERTIFICATE_CONTROLLER)
@@ -68,7 +68,7 @@ public class GiftCertificateHateoasAdder implements HateoasAdder<GiftCertificate
                     .toUriComponentsBuilder()
                     .toUriString()
                     .replaceAll(REDUNDANT_INFO, EMPTY);
-            model.add(Link.of(prevLinkString, "prev"));
+            model.add(Link.of(prevLinkString, "prev").withType("GET"));
         }
         model.getContent().forEach(this::addLinksToEntity);
     }
