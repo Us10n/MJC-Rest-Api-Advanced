@@ -2,6 +2,7 @@ package com.epam.esm.repository.dao;
 
 import com.epam.esm.domain.entity.Tag;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,5 +22,7 @@ public interface TagDao extends Dao<Tag> {
      *
      * @return found tag.
      */
-    Optional<Tag> findWidelyUsedTagOfUserWithHighestCostOfAllOrders();
+    List<Tag> findWidelyUsedTagsOfUserWithHighestCostOfAllOrders(Integer page, Integer limit);
+
+    long countAllWidelyUsedTagsOfUserWithHighestCostOfAllOrders();
 }

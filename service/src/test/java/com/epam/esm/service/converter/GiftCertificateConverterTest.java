@@ -18,10 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
@@ -59,6 +56,7 @@ class GiftCertificateConverterTest {
     void convertToDto() {
         GiftCertificateDto actual = giftCertificateConverter.convertToDto(certificate);
         GiftCertificateDto expected = certificateDto;
+        actual.getTags().sort(Comparator.comparing(TagDto::getTagId));
 
         Assertions.assertEquals(expected, actual);
     }

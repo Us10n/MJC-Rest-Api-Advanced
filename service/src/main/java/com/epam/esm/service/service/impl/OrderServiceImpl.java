@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,19 +65,37 @@ public class OrderServiceImpl implements OrderService {
         if (!customer.isPresent()) {
             throw new NoSuchElementException(USER_NOT_FOUND);
         }
-        Optional<GiftCertificate> requestedCertificate = giftCertificateDao.findById(order.getGiftCertificateId());
-        if (!requestedCertificate.isPresent()) {
-            throw new NoSuchElementException(GIFT_CERTIFICATE_NOT_FOUND);
-        }
+        Optional<GiftCertificate> requestedCertificateOptional = giftCertificateDao.findById(order.getGiftCertificateId());
+        GiftCertificate requestedCertificate = requestedCertificateOptional
+                .orElseThrow(() -> new NoSuchElementException(GIFT_CERTIFICATE_NOT_FOUND));
 
         OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setGiftCertificate(requestedCertificate.get());
+        orderDetail.setGiftCertificate(requestedCertificate);
         orderDetail.setUser(customer.get());
-        orderDetail.setPrice(requestedCertificate.get().getPrice());
+        orderDetail.setPrice(requestedCertificate.getPrice());
         orderDetail.setPurchaseTime(DateHandler.getCurrentDate());
         OrderDetail createdOrder = orderDao.create(orderDetail);
 
         return orderConverter.convertToDto(createdOrder);
+    }
+
+    @Override
+    public List<OrderDetailDto> create(List<Order> orders) {
+        ExceptionHolder exceptionHolder = new ExceptionHolder();
+        orders.forEach(
+                order -> OrderValidator.isOrderValid(order, exceptionHolder)
+        );
+        if (!exceptionHolder.getExceptionMessages().isEmpty()) {
+            throw new IncorrectParameterException(exceptionHolder);
+        }
+
+        List<OrderDetailDto> createdOrders = new ArrayList<>();
+        orders.forEach(order -> {
+            OrderDetailDto createdOrder = create(order);
+            createdOrders.add(createdOrder);
+        });
+
+        return createdOrders;
     }
 
     @Override
@@ -93,25 +112,23 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDetailDto readById(long id) {
         Optional<OrderDetail> optionalOrder = orderDao.findById(id);
-        if (!optionalOrder.isPresent()) {
-            throw new NoSuchElementException(ORDER_NOT_FOUND);
-        }
+        OrderDetail orderDetail = optionalOrder
+                .orElseThrow(() -> new NoSuchElementException(ORDER_NOT_FOUND));
 
-        return orderConverter.convertToDto(optionalOrder.get());
+        return orderConverter.convertToDto(orderDetail);
     }
 
     @Override
     public PagedModel<OrderDetailDto> readOrdersByUserId(long id, Integer page, Integer limit) {
         Optional<User> optionalUser = userDao.findById(id);
-        if (!optionalUser.isPresent()) {
-            throw new NoSuchElementException(USER_NOT_FOUND);
-        }
+        User foundUser = optionalUser
+                .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND));
 
         List<OrderDetailDto> orderDetailDtos = orderDao.findOrdersByUserId(id, page, limit)
                 .stream()
                 .map(orderConverter::convertToDto)
                 .collect(Collectors.toList());
-        long totalNumberOfEntities = giftCertificateDao.countAll();
+        long totalNumberOfEntities = foundUser.getOrders().size();
         PagedModel.PageMetadata metadata = new PagedModel.PageMetadata(limit, page, totalNumberOfEntities);
         return PagedModel.of(orderDetailDtos, metadata);
     }

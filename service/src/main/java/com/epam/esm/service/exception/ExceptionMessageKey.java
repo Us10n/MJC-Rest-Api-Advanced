@@ -25,6 +25,7 @@ public final class ExceptionMessageKey {
     public static final String BAD_TAG_NAME = "tag.badName";
     public static final String TAG_EXIST = "tag.alreadyExist";
     public static final String TAG_NOT_FOUND = "tag.notFound";
+    public static final String TAGS_NOT_FOUND="tags.notFound";
 
     public static final String USER_NOT_FOUND = "user.notFound";
 

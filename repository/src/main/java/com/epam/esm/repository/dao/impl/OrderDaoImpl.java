@@ -23,6 +23,7 @@ public class OrderDaoImpl implements OrderDao {
 
     private static final String FIND_ORDERS_BY_USER_ID="SELECT o FROM OrderDetail o WHERE o.user.id = :userId";
     private static final String COUNT_ENTITIES_HQUERY = "SELECT count(o) FROM OrderDetail o";
+    private static final String ID = "id";
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -47,6 +48,7 @@ public class OrderDaoImpl implements OrderDao {
         CriteriaQuery<OrderDetail> query = criteriaBuilder.createQuery(OrderDetail.class).where();
         Root<OrderDetail> from = query.from(OrderDetail.class);
         CriteriaQuery<OrderDetail> criteriaQuery = query.select(from);
+        criteriaQuery.orderBy(criteriaBuilder.asc(from.get(ID)));
 
         return entityManager.createQuery(criteriaQuery)
                 .setFirstResult(offset)

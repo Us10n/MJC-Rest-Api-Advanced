@@ -52,10 +52,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto readById(long id) {
         Optional<User> optionalUser = userDao.findById(id);
-        if (!optionalUser.isPresent()) {
-            throw new NoSuchElementException(USER_NOT_FOUND);
-        }
+        User foundUser=optionalUser
+                .orElseThrow(()->new NoSuchElementException(USER_NOT_FOUND));
 
-        return userConverter.convertToDto(optionalUser.get());
+        return userConverter.convertToDto(foundUser);
     }
 }

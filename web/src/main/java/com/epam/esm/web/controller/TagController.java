@@ -40,7 +40,7 @@ public class TagController {
      * @return the list
      */
     @GetMapping
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public PagedModel<TagDto> readAllTags(@RequestParam(name = "page", defaultValue = "1") @Positive Integer page,
                                           @RequestParam(name = "limit", defaultValue = "10") @Positive Integer limit) {
         PagedModel<TagDto> tagDtos = tagService.readAll(page, limit);
@@ -56,7 +56,7 @@ public class TagController {
      * @return the tag dto
      */
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public TagDto readTadById(@PathVariable long id) {
         TagDto tagDto = tagService.readById(id);
         tagHateoasAdder.addLinksToEntity(tagDto);
@@ -66,11 +66,12 @@ public class TagController {
 
     @GetMapping("/popular")
     @ResponseStatus(HttpStatus.OK)
-    public TagDto readWidelyUsedTag() {
-        TagDto tagDto = tagService.findWidelyUsedTagOfUserWithHighestCostOfAllOrders();
-        tagHateoasAdder.addLinksToEntity(tagDto);
+    public PagedModel<TagDto> readWidelyUsedTag(@RequestParam(name = "page", defaultValue = "1") @Positive Integer page,
+                                                @RequestParam(name = "limit", defaultValue = "10") @Positive Integer limit) {
+        PagedModel<TagDto> tagDtos = tagService.findWidelyUsedTagOfUserWithHighestCostOfAllOrders(page, limit);
+        tagHateoasAdder.addLinksToCollection(tagDtos);
 
-        return tagDto;
+        return tagDtos;
     }
 
     /**

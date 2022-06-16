@@ -168,11 +168,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         List<Tag> tagsToPersist = new ArrayList<>();
         uniqueTags.forEach(newTag -> {
             Optional<Tag> foundTag = tagDao.findByName(newTag.getName());
-            if (foundTag.isPresent()) {
-                tagsToPersist.add(foundTag.get());
-            } else {
-                tagsToPersist.add(newTag);
-            }
+            tagsToPersist.add(foundTag.orElse(newTag));
         });
         return tagsToPersist;
     }

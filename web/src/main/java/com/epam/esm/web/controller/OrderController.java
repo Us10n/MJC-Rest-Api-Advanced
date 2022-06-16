@@ -27,7 +27,7 @@ public class OrderController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public PagedModel<OrderDetailDto> readAllOrders(@RequestParam(name = "page", defaultValue = "1") @Positive Integer page,
                                                     @RequestParam(name = "limit", defaultValue = "10") @Positive Integer limit) {
         PagedModel<OrderDetailDto> orderDetailDtos = orderService.readAll(page, limit);
@@ -37,7 +37,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public OrderDetailDto readOrderById(@PathVariable long id) {
         OrderDetailDto orderDetailDto = orderService.readById(id);
         orderHateoasAdder.addLinksToEntity(orderDetailDto);
@@ -55,7 +55,7 @@ public class OrderController {
     }
 
     @GetMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public PagedModel<OrderDetailDto> readOrdersByUserId(@PathVariable long id,
                                                          @RequestParam(name = "page", defaultValue = "1") @Positive Integer page,
                                                          @RequestParam(name = "limit", defaultValue = "10") @Positive Integer limit) {

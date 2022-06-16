@@ -21,6 +21,7 @@ import java.util.Optional;
 public class UserDaoImpl implements UserDao {
 
     private static final String COUNT_ENTITIES_HQUERY = "SELECT count(u) FROM User u";
+    private static final String ID = "id";
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -38,6 +39,7 @@ public class UserDaoImpl implements UserDao {
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> from = query.from(User.class);
         CriteriaQuery<User> criteriaQuery = query.select(from);
+        criteriaQuery.orderBy(criteriaBuilder.asc(from.get(ID)));
 
         return entityManager.createQuery(criteriaQuery)
                 .setFirstResult(offset)

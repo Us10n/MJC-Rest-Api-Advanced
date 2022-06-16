@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.service.exception.ExceptionMessageKey.TAG_EXIST;
-import static com.epam.esm.service.exception.ExceptionMessageKey.TAG_NOT_FOUND;
+import static com.epam.esm.service.exception.ExceptionMessageKey.*;
 
 /**
  * The type Tag service.
@@ -73,21 +72,22 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto readById(long id) {
         Optional<Tag> optionalTag = tagDao.findById(id);
-        if (!optionalTag.isPresent()) {
-            throw new NoSuchElementException(TAG_NOT_FOUND);
-        }
+        Tag foundTag = optionalTag
+                .orElseThrow(() -> new NoSuchElementException(TAG_NOT_FOUND));
 
-        return tagConverter.convertToDto(optionalTag.get());
+        return tagConverter.convertToDto(foundTag);
     }
 
     @Override
-    public TagDto findWidelyUsedTagOfUserWithHighestCostOfAllOrders() {
-        Optional<Tag> optionalTag = tagDao.findWidelyUsedTagOfUserWithHighestCostOfAllOrders();
-        if (!optionalTag.isPresent()) {
-            throw new NoSuchElementException(TAG_NOT_FOUND);
-        }
+    public PagedModel<TagDto> findWidelyUsedTagOfUserWithHighestCostOfAllOrders(Integer page, Integer limit) {
+        List<Tag> tags = tagDao.findWidelyUsedTagsOfUserWithHighestCostOfAllOrders(page, limit);
+        List<TagDto> tagDtos = tags.stream()
+                .map(tagConverter::convertToDto)
+                .collect(Collectors.toList());
 
-        return tagConverter.convertToDto(optionalTag.get());
+        long totalNumberOfEntities = tagDao.countAllWidelyUsedTagsOfUserWithHighestCostOfAllOrders();
+        PagedModel.PageMetadata metadata = new PagedModel.PageMetadata(limit, page, totalNumberOfEntities);
+        return PagedModel.of(tagDtos, metadata);
     }
 
     @Override

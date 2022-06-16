@@ -4,17 +4,27 @@ import com.epam.esm.domain.entity.Order;
 import com.epam.esm.domain.dto.OrderDetailDto;
 import org.springframework.hateoas.PagedModel;
 
+import java.util.List;
+
 /**
  * The interface Order service.
  */
 public interface OrderService {
     /**
-     * Create order detail dto.
+     * Create order.
      *
      * @param object the object
      * @return the order detail dto
      */
     OrderDetailDto create(Order object);
+
+    /**
+     * Create orders.
+     *
+     * @param object the object
+     * @return the order detail dto
+     */
+    List<OrderDetailDto> create(List<Order> object);
 
     /**
      * Read all paged model.

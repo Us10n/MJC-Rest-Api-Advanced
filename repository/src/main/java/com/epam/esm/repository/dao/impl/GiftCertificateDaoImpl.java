@@ -28,6 +28,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private static final String FIND_BY_NAME_QUERY = FIND_ALL_QUERY + " WHERE name=:certName";
     private static final String DETACH_ALL_TAGS_BY_ID_QUERY = "DELETE FROM gift_certificate_tags WHERE gift_certificate_id=:certificateId";
     private static final String COUNT_ENTITIES_HQUERY = "SELECT count(crt) FROM GiftCertificate crt";
+    private static final String ID = "id";
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -61,6 +62,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         CriteriaQuery<GiftCertificate> query = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> from = query.from(GiftCertificate.class);
         CriteriaQuery<GiftCertificate> criteriaQuery = query.select(from);
+        criteriaQuery.orderBy(criteriaBuilder.asc(from.get(ID)));
 
         return entityManager.createQuery(criteriaQuery)
                 .setFirstResult(offset)
@@ -73,6 +75,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         return entityManager.createQuery(COUNT_ENTITIES_HQUERY, Long.class).getSingleResult();
     }
 
+    @Override
     public long countAllByCriteria(GiftCertificateCriteria criteria) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> criteriaQuery = GiftCertificateQueryCreator.buildGetQueryByCriteria(criteria, criteriaBuilder);

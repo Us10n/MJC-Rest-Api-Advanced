@@ -44,7 +44,7 @@ public class GiftCertificateController {
      * @return the gift certificate dto
      */
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public GiftCertificateDto readGiftCertificateById(@PathVariable long id) {
         GiftCertificateDto giftCertificateDto = giftCertificateService.readById(id);
         giftCertificateHateoasAdder.addLinksToEntity(giftCertificateDto);
@@ -108,7 +108,7 @@ public class GiftCertificateController {
      * @return the all gift certificates
      */
     @GetMapping
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public PagedModel<GiftCertificateDto> readAllGiftCertificates(
             @RequestParam(name = "tag", required = false) Set<String> tagNames,
             @RequestParam(name = "name", required = false) String partName,

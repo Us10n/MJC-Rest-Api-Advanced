@@ -4,10 +4,7 @@ import com.epam.esm.domain.criteria.GiftCertificateCriteria;
 import com.epam.esm.domain.entity.GiftCertificate;
 import lombok.experimental.UtilityClass;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -19,11 +16,13 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class GiftCertificateQueryCreator {
     private static final String PERCENT = "%";
+    private static final String ID = "id";
     private static final String NAME = "name";
     private static final String ASC = "ASC";
     private static final String DESC = "DESC";
     private static final String DESCRIPTION = "description";
     private static final String CREATE_DATE = "createDate";
+    private static final String DATE = "date";
     private static final String TAGS_TABLE = "tags";
 
     /**
@@ -45,6 +44,7 @@ public class GiftCertificateQueryCreator {
 
         addSortByName(criteria, criteriaBuilder, criteriaQuery, giftCertificateRoot);
         addSortByCreateDate(criteria, criteriaBuilder, criteriaQuery, giftCertificateRoot);
+        addSortById(criteriaBuilder, criteriaQuery, giftCertificateRoot);
 
         return criteriaQuery;
     }
@@ -77,12 +77,11 @@ public class GiftCertificateQueryCreator {
         String sortBy = criteria.getSortBy();
 
         if (sortOrder != null && sortBy != null && sortBy.equalsIgnoreCase(NAME)) {
-            if (sortOrder.equalsIgnoreCase(ASC)) {
-                criteriaQuery.orderBy(criteriaBuilder.asc(root.get(NAME)));
-            }
-            if (sortOrder.equalsIgnoreCase(DESC)) {
-                criteriaQuery.orderBy(criteriaBuilder.desc(root.get(NAME)));
-            }
+            Path<Set<String>> column = root.get(NAME);
+            Order order = sortOrder.equalsIgnoreCase(ASC)
+                    ? criteriaBuilder.asc(column)
+                    : criteriaBuilder.desc(column);
+            criteriaQuery.orderBy(order);
         }
     }
 
@@ -91,13 +90,19 @@ public class GiftCertificateQueryCreator {
         String sortOrder = criteria.getSortOrder();
         String sortBy = criteria.getSortBy();
 
-        if (sortOrder != null && sortBy != null && sortBy.equalsIgnoreCase(CREATE_DATE)) {
-            if (sortOrder.equalsIgnoreCase(ASC)) {
-                criteriaQuery.orderBy(criteriaBuilder.asc(root.get(CREATE_DATE)));
-            }
-            if (sortOrder.equalsIgnoreCase(DESC)) {
-                criteriaQuery.orderBy(criteriaBuilder.desc(root.get(CREATE_DATE)));
-            }
+        if (sortOrder != null && sortBy != null && sortBy.equalsIgnoreCase(DATE)) {
+            Path<Set<String>> column = root.get(CREATE_DATE);
+            Order order = sortOrder.equalsIgnoreCase(ASC)
+                    ? criteriaBuilder.asc(column)
+                    : criteriaBuilder.desc(column);
+            criteriaQuery.orderBy(order);
+        }
+    }
+
+    private static void addSortById(CriteriaBuilder criteriaBuilder, CriteriaQuery<GiftCertificate> criteriaQuery,
+                                    Root<GiftCertificate> root) {
+        if (criteriaQuery.getOrderList().isEmpty()) {
+            criteriaQuery.orderBy(criteriaBuilder.asc(root.get(ID)));
         }
     }
 

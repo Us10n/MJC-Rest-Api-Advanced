@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public PagedModel<UserDto> readAllUsers(@RequestParam(name = "page", defaultValue = "1") @Positive Integer page,
                                             @RequestParam(name = "limit", defaultValue = "10") @Positive Integer limit) {
         PagedModel<UserDto> userDtos = userService.readAll(page, limit);
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public UserDto readUserById(@PathVariable long id) {
         UserDto userDto = userService.readById(id);
         userHateoasAdder.addLinksToEntity(userDto);

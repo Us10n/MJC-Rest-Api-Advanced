@@ -58,7 +58,7 @@ class TagServiceImplTest {
         Mockito.when(tagDao.findAll(1, 3)).thenReturn(tags.subList(0, 3));
         Mockito.when(tagDao.findById(3)).thenReturn(Optional.of(tags.get(2)));
         Mockito.when(tagDao.findById(1)).thenReturn(Optional.of(tags.get(1)));
-        Mockito.when(tagDao.findWidelyUsedTagOfUserWithHighestCostOfAllOrders()).thenReturn(Optional.of(tags.get(7)));
+        Mockito.when(tagDao.findWidelyUsedTagsOfUserWithHighestCostOfAllOrders(1,10)).thenReturn(tags.subList(0,1));
         Mockito.when(tagDao.create(tags.get(0))).thenReturn(tags.get(0));
         Mockito.when(tagDao.countAll()).thenReturn(8L);
 
@@ -103,8 +103,8 @@ class TagServiceImplTest {
 
     @Test
     void findWidelyUsedTagOfUserWithHighestCostOfAllOrders() {
-        TagDto actual = tagService.findWidelyUsedTagOfUserWithHighestCostOfAllOrders();
-        TagDto expected = tagDtos.get(7);
+        TagDto actual = tagService.findWidelyUsedTagOfUserWithHighestCostOfAllOrders(1,10).get(0);
+        TagDto expected = tagDtos.get(0);
         Assertions.assertEquals(expected, actual);
     }
 }

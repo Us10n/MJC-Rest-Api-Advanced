@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * The type Tag dao.
@@ -24,7 +25,7 @@ public class TagDaoImpl implements TagDao {
     private static final String FIND_ALL_QUERY = "SELECT tags.id, tags.name FROM tags";
     private static final String FIND_BY_NAME_QUERY = FIND_ALL_QUERY + " WHERE name=:tagName";
     private static final String DETACH_TAG_BY_ID_QUERY = "DELETE FROM gift_certificate_tags WHERE tag_id=:tagId";
-    private static final String FIND_WIDELY_USED_TAG_OF_USER_WITH_HIGHEST_COST_OF_ALL_ORDERS="SELECT tags.id, tags.name, gfs.name FROM tags " +
+    private static final String FIND_WIDELY_USED_TAG_OF_USER_WITH_HIGHEST_COST_OF_ALL_ORDERS = "SELECT tags.id, tags.name, gfs.name FROM tags " +
             "JOIN gift_certificate_tags gfts on gfts.tag_id= tags.id " +
             "JOIN gift_certificates gfs on gfs.id=gfts.gift_certificate_id " +
             "JOIN orders ords on ords.gift_certificate_id=gfs.id " +
@@ -33,8 +34,24 @@ public class TagDaoImpl implements TagDao {
             "    SELECT users.id FROM users JOIN orders ON orders.user_id=users.id GROUP BY users.id ORDER BY sum(orders.price) DESC LIMIT 1 " +
             ") " +
             "GROUP BY tags.name " +
-            "ORDER BY count(tags.name) DESC LIMIT 1";
+            "HAVING count(tags.name)=( " +
+            "    SELECT count(tags.name) FROM module.tags " +
+            "    JOIN module.gift_certificate_tags gfts on gfts.tag_id= tags.id " +
+            "    JOIN module.gift_certificates gfs on gfs.id=gfts.gift_certificate_id " +
+            "    JOIN module.orders ords on ords.gift_certificate_id=gfs.id " +
+            "    JOIN module.users usrs on ords.user_id=usrs.id " +
+            "    WHERE usrs.id=( " +
+            "        SELECT users.id FROM module.users " +
+            "        JOIN module.orders ON orders.user_id=users.id " +
+            "        GROUP BY users.id " +
+            "        ORDER BY sum(orders.price) DESC LIMIT 1 " +
+            "    ) " +
+            "    GROUP BY tags.name " +
+            "    ORDER BY count(tags.name) DESC limit 1 " +
+            ") " +
+            "ORDER BY count(tags.name) DESC";
     private static final String COUNT_ENTITIES_HQUERY = "SELECT count(t) FROM Tag t";
+    private static final String ID = "id";
 
 
     @PersistenceContext
@@ -69,6 +86,7 @@ public class TagDaoImpl implements TagDao {
         CriteriaQuery<Tag> query = criteriaBuilder.createQuery(Tag.class);
         Root<Tag> from = query.from(Tag.class);
         CriteriaQuery<Tag> criteriaQuery = query.select(from);
+        criteriaQuery.orderBy(criteriaBuilder.asc(from.get(ID)));
 
         return entityManager.createQuery(criteriaQuery)
                 .setFirstResult(offset)
@@ -82,10 +100,20 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public Optional<Tag> findWidelyUsedTagOfUserWithHighestCostOfAllOrders() {
+    public long countAllWidelyUsedTagsOfUserWithHighestCostOfAllOrders() {
         return entityManager.createNativeQuery(FIND_WIDELY_USED_TAG_OF_USER_WITH_HIGHEST_COST_OF_ALL_ORDERS, Tag.class)
-                .getResultStream()
-                .findFirst();
+                .getResultList()
+                .size();
+    }
+
+    @Override
+    public List<Tag> findWidelyUsedTagsOfUserWithHighestCostOfAllOrders(Integer page, Integer limit) {
+        int offset = (page - 1) * limit;
+
+        return entityManager.createNativeQuery(FIND_WIDELY_USED_TAG_OF_USER_WITH_HIGHEST_COST_OF_ALL_ORDERS, Tag.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
     }
 
     @Override
